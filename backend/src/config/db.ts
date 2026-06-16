@@ -1,9 +1,18 @@
 import mongoose, { type ClientSession } from "mongoose";
 import { env } from "./env.js";
 
+let transactionsSupported = false;
+
 export const connectDb = async () => {
   mongoose.set("strictQuery", true);
   await mongoose.connect(env.mongodbUri, { serverSelectionTimeoutMS: 10000 });
+  try {
+    const db = mongoose.connection.db;
+    const info = db ? await db.admin().command({ hello: 1 }) : {};
+    transactionsSupported = Boolean(info.setName) || info.msg === "isdbgrid";
+  } catch {
+    transactionsSupported = false;
+  }
   return mongoose.connection;
 };
 
@@ -14,6 +23,9 @@ export const disconnectDb = async () => {
 export const withTransaction = async <T>(
   work: (session: ClientSession | null) => Promise<T>,
 ): Promise<T> => {
+  if (!transactionsSupported) {
+    return work(null);
+  }
   const session = await mongoose.startSession();
   try {
     let result!: T;
@@ -21,12 +33,6 @@ export const withTransaction = async <T>(
       result = await work(session);
     });
     return result;
-  } catch (error) {
-    const err = error as { code?: number; message?: string };
-    if (err.code === 20 || /Transaction numbers|replica set/i.test(err.message || "")) {
-      return work(null);
-    }
-    throw error;
   } finally {
     await session.endSession();
   }
