@@ -5,7 +5,6 @@ import {
   ChangePasswordRequest,
   LoginRequest,
   MeResponse,
-  User,
 } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
@@ -30,9 +29,5 @@ export class AuthApi {
 
   changePassword(body: ChangePasswordRequest) {
     return this.api.post<null>('/auth/change-password', body);
-  }
-
-  bootstrapSuperAdmin(body: { fullName: string; email: string; password: string }) {
-    return this.api.post<{ user: User }>('/auth/bootstrap-super-admin', body);
   }
 }

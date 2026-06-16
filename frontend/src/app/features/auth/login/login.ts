@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   template: `
     <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()">
       <h2 class="text-lg font-semibold text-fg">Sign in</h2>
@@ -49,19 +49,6 @@ import { AuthService } from '../../../core/auth/auth.service';
         }
       </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label for="slug" class="text-sm font-medium text-fg">
-          Institution code <span class="text-muted">(leave blank for super admin)</span>
-        </label>
-        <input
-          id="slug"
-          type="text"
-          formControlName="institutionSlug"
-          autocomplete="organization"
-          class="rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg outline-none focus:border-primary focus:ring-2 focus:ring-primary/40"
-        />
-      </div>
-
       <button
         type="submit"
         class="mt-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
@@ -69,10 +56,6 @@ import { AuthService } from '../../../core/auth/auth.service';
       >
         {{ loading() ? 'Signing in…' : 'Sign in' }}
       </button>
-
-      <a routerLink="/bootstrap" class="text-center text-xs text-muted hover:text-fg">
-        First-time setup → create super admin
-      </a>
     </form>
   `,
 })
@@ -87,7 +70,6 @@ export class Login {
   protected readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
-    institutionSlug: [''],
   });
 
   protected invalid(control: string): boolean {
@@ -102,11 +84,9 @@ export class Login {
     }
     this.loading.set(true);
     this.error.set(null);
-    const { email, password, institutionSlug } = this.form.getRawValue();
+    const { email, password } = this.form.getRawValue();
 
-    this.auth
-      .login({ email, password, institutionSlug: institutionSlug || undefined })
-      .subscribe({
+    this.auth.login({ email, password }).subscribe({
         next: (user) => {
           this.loading.set(false);
           if (user) this.router.navigateByUrl('/app');

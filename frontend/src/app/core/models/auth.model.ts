@@ -31,7 +31,6 @@ export interface AuthResult {
 export interface LoginRequest {
   email: string;
   password: string;
-  institutionSlug?: string;
 }
 
 export interface ChangePasswordRequest {
