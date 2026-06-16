@@ -14,6 +14,7 @@ import { roleRouter } from "./routes/role.routes.js";
 import { userRouter } from "./routes/user.routes.js";
 import { bookRouter } from "./routes/book.routes.js";
 import { copyRouter } from "./routes/copy.routes.js";
+import { circulationRouter } from "./routes/circulation.routes.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/v1/roles", roleRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/books/:bookId/copies", copyRouter);
 app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/circulation", circulationRouter);
 
 app.use((_req, _res, next) => next(new ApiError(404, "Route not found")));
 

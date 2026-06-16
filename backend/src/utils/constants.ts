@@ -20,6 +20,9 @@ export const ISSUE_STATUS = {
 
 export const FIELD_DATA_TYPES = ["string", "number", "boolean", "date", "enum"] as const;
 
+export const DEFAULT_LOAN_DAYS = 14;
+export const FINE_PER_DAY = 5;
+
 export const DEFAULT_PERMISSION_TEMPLATE = [
   { key: "role.manage", label: "Manage roles", group: "access" },
   { key: "role.view", label: "View roles", group: "access" },
