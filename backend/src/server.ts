@@ -23,7 +23,7 @@ const start = async () => {
   });
 };
 
-start().catch((error) => {
-  logger.error(`Failed to start server: ${error.message}`);
+start().catch((error: unknown) => {
+  logger.error(`Failed to start server: ${(error as Error).message}`);
   process.exit(1);
 });

@@ -1,24 +1,24 @@
-export const USER_STATUS = { ACTIVE: "active", INACTIVE: "inactive" };
+export const USER_STATUS = { ACTIVE: "active", INACTIVE: "inactive" } as const;
 
-export const INSTITUTION_STATUS = { ACTIVE: "active", SUSPENDED: "suspended" };
+export const INSTITUTION_STATUS = { ACTIVE: "active", SUSPENDED: "suspended" } as const;
 
-export const BOOK_STATUS = { ACTIVE: "active", ARCHIVED: "archived" };
+export const BOOK_STATUS = { ACTIVE: "active", ARCHIVED: "archived" } as const;
 
 export const COPY_STATUS = {
   AVAILABLE: "available",
   ISSUED: "issued",
   LOST: "lost",
   DAMAGED: "damaged",
-};
+} as const;
 
 export const ISSUE_STATUS = {
   ISSUED: "issued",
   RETURNED: "returned",
   OVERDUE: "overdue",
   LOST: "lost",
-};
+} as const;
 
-export const FIELD_DATA_TYPES = ["string", "number", "boolean", "date", "enum"];
+export const FIELD_DATA_TYPES = ["string", "number", "boolean", "date", "enum"] as const;
 
 export const DEFAULT_PERMISSION_TEMPLATE = [
   { key: "role.manage", label: "Manage roles", group: "access" },
@@ -38,12 +38,12 @@ export const DEFAULT_PERMISSION_TEMPLATE = [
 export const TOKEN_COOKIES = {
   ACCESS: "accessToken",
   REFRESH: "refreshToken",
-};
+} as const;
 
 export const CACHE_KEYS = {
-  userPermissions: (userId) => `perms:${userId}`,
-  institutionPermissions: (institutionId) => `instperms:${institutionId}`,
-  bookFields: (institutionId) => `bookfields:${institutionId}`,
+  userPermissions: (userId: string) => `perms:${userId}`,
+  institutionPermissions: (institutionId: string) => `instperms:${institutionId}`,
+  bookFields: (institutionId: string) => `bookfields:${institutionId}`,
 };
 
 export const CACHE_TTL = {

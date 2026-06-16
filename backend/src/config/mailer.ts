@@ -1,9 +1,9 @@
-import nodemailer from "nodemailer";
+import nodemailer, { type Transporter } from "nodemailer";
 import { env } from "./env.js";
 
-let transporter = null;
+let transporter: Transporter | null = null;
 
-const getTransporter = () => {
+const getTransporter = (): Transporter | null => {
   if (transporter) return transporter;
   if (!env.mail.user || !env.mail.pass) return null;
   transporter = nodemailer.createTransport({
@@ -15,7 +15,14 @@ const getTransporter = () => {
   return transporter;
 };
 
-export const sendMail = async ({ to, subject, html, text }) => {
+interface MailOptions {
+  to: string;
+  subject: string;
+  html?: string;
+  text?: string;
+}
+
+export const sendMail = async ({ to, subject, html, text }: MailOptions) => {
   const client = getTransporter();
   if (!client) return null;
   return client.sendMail({ from: env.mail.from, to, subject, html, text });

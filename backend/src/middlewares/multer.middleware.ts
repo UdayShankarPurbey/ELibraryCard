@@ -1,5 +1,6 @@
-import multer from "multer";
+import multer, { type FileFilterCallback } from "multer";
 import path from "path";
+import type { Request } from "express";
 import { ApiError } from "../utils/ApiError.js";
 
 const storage = multer.diskStorage({
@@ -10,7 +11,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (_req, file, cb) => {
+const fileFilter = (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   if (/^image\//.test(file.mimetype)) return cb(null, true);
   cb(new ApiError(400, "Only image files are allowed"));
 };

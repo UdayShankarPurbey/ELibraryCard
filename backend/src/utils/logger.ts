@@ -7,7 +7,15 @@ const consoleFormat = combine(
   colorize(),
   timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
   errors({ stack: true }),
-  printf(({ level, message, timestamp, stack }) => `${timestamp} ${level}: ${stack || message}`),
+  printf((info) => {
+    const { level, message, timestamp, stack } = info as {
+      level: string;
+      message: string;
+      timestamp?: string;
+      stack?: string;
+    };
+    return `${timestamp} ${level}: ${stack || message}`;
+  }),
 );
 
 const fileFormat = combine(timestamp(), errors({ stack: true }), json());

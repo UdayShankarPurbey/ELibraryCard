@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const required = ["MONGODB_URI", "ACCESS_TOKEN_SECRET", "REFRESH_TOKEN_SECRET"];
+const required = ["MONGODB_URI", "ACCESS_TOKEN_SECRET", "REFRESH_TOKEN_SECRET"] as const;
 
 const missing = required.filter((key) => !process.env[key]);
 if (missing.length) {
@@ -13,12 +13,12 @@ export const env = {
   port: Number(process.env.PORT) || 8000,
   nodeEnv: process.env.NODE_ENV || "development",
   corsOrigin: process.env.CORS_ORIGIN || "*",
-  mongodbUri: process.env.MONGODB_URI,
+  mongodbUri: process.env.MONGODB_URI as string,
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   jwt: {
-    accessSecret: process.env.ACCESS_TOKEN_SECRET,
+    accessSecret: process.env.ACCESS_TOKEN_SECRET as string,
     accessExpiry: process.env.ACCESS_TOKEN_EXPIRY || "15m",
-    refreshSecret: process.env.REFRESH_TOKEN_SECRET,
+    refreshSecret: process.env.REFRESH_TOKEN_SECRET as string,
     refreshExpiry: process.env.REFRESH_TOKEN_EXPIRY || "7d",
   },
   cloudinary: {

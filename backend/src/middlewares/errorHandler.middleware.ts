@@ -1,21 +1,19 @@
+import type { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { ApiError } from "../utils/ApiError.js";
 import { env } from "../config/env.js";
 import { logger } from "../utils/logger.js";
 
-export const errorHandler = (err, req, res, next) => {
-  let error = err;
+export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+  let error: any = err;
 
   if (error instanceof ZodError) {
-    const errors = error.issues.map((i) => ({
-      path: i.path.join("."),
-      message: i.message,
-    }));
+    const errors = error.issues.map((i) => ({ path: i.path.join("."), message: i.message }));
     error = new ApiError(422, "Validation failed", errors);
   } else if (error?.name === "CastError") {
     error = new ApiError(400, `Invalid value for ${error.path}`);
   } else if (error?.name === "ValidationError") {
-    const errors = Object.values(error.errors || {}).map((e) => ({
+    const errors = Object.values(error.errors || {}).map((e: any) => ({
       path: e.path,
       message: e.message,
     }));
@@ -31,7 +29,7 @@ export const errorHandler = (err, req, res, next) => {
     logger.error(`${req.method} ${req.originalUrl} - ${error.message}`, { stack: error.stack });
   }
 
-  const payload = {
+  const payload: Record<string, unknown> = {
     statusCode: error.statusCode,
     success: false,
     message: error.message,
