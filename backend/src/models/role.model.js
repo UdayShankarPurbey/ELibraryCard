@@ -13,7 +13,7 @@ const roleSchema = new mongoose.Schema(
     permissions: [{ type: String }],
     isSystem: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 roleSchema.index({ institution: 1, name: 1 }, { unique: true });

@@ -13,7 +13,7 @@ const permissionSchema = new mongoose.Schema(
     group: { type: String, trim: true, default: "general" },
     description: { type: String, trim: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 permissionSchema.index({ institution: 1, key: 1 }, { unique: true });

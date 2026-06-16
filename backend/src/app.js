@@ -18,9 +18,6 @@ app.get("/api/v1/health", (_req, res) => {
   res.status(200).json(new ApiResponse(200, { status: "ok" }, "Service healthy"));
 });
 
-// Feature routers are mounted here as modules are built.
-// app.use("/api/v1/auth", authRouter);
-
 app.use((_req, _res, next) => next(new ApiError(404, "Route not found")));
 
 app.use(errorHandler);

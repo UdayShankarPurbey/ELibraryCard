@@ -20,9 +20,6 @@ export const ISSUE_STATUS = {
 
 export const FIELD_DATA_TYPES = ["string", "number", "boolean", "date", "enum"];
 
-// Optional starter set the Super Admin can seed a new institution with, then edit
-// or replace. Permissions are NOT hardcoded access rules — the live catalog lives
-// in the per-institution `Permission` collection that the Super Admin manages.
 export const DEFAULT_PERMISSION_TEMPLATE = [
   { key: "role.manage", label: "Manage roles", group: "access" },
   { key: "role.view", label: "View roles", group: "access" },

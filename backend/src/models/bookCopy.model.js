@@ -21,7 +21,7 @@ const bookCopySchema = new mongoose.Schema(
       default: "available",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const BookCopy = mongoose.model("BookCopy", bookCopySchema);

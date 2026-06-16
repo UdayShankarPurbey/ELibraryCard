@@ -20,9 +20,7 @@ const loadPermissions = async (user) => {
   if (cached) return cached;
 
   const populated = await user.populate("roles", "permissions");
-  const permissions = [
-    ...new Set((populated.roles || []).flatMap((r) => r.permissions || [])),
-  ];
+  const permissions = [...new Set((populated.roles || []).flatMap((r) => r.permissions || []))];
   await cacheSet(cacheKey, permissions, CACHE_TTL.PERMISSIONS).catch(() => {});
   return permissions;
 };

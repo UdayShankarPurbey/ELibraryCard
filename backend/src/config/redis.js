@@ -1,5 +1,6 @@
 import Redis from "ioredis";
 import { env } from "./env.js";
+import { logger } from "../utils/logger.js";
 
 export const redis = new Redis(env.redisUrl, {
   lazyConnect: true,
@@ -11,7 +12,7 @@ export const redis = new Redis(env.redisUrl, {
 let warned = false;
 redis.on("error", (err) => {
   if (!warned) {
-    console.warn(`Redis error — cache disabled (${err.code || err.message})`);
+    logger.warn(`Redis error — cache disabled (${err.code || err.message})`);
     warned = true;
   }
 });

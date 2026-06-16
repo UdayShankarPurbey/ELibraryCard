@@ -6,7 +6,7 @@ const institutionSchema = new mongoose.Schema(
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     status: { type: String, enum: ["active", "suspended"], default: "active" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Institution = mongoose.model("Institution", institutionSchema);

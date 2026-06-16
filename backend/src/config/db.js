@@ -13,8 +13,6 @@ export const disconnectDb = async () => {
   await mongoose.disconnect();
 };
 
-// Runs `work` inside a transaction when the server supports it (replica set).
-// Falls back to running without a transaction on standalone servers.
 export const withTransaction = async (work) => {
   const session = await mongoose.startSession();
   try {

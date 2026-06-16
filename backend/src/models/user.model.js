@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role" }],
     status: { type: String, enum: ["active", "inactive"], default: "active" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.index({ institution: 1, email: 1 }, { unique: true });

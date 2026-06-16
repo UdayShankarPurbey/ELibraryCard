@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { ApiError } from "../utils/ApiError.js";
 import { env } from "../config/env.js";
+import { logger } from "../utils/logger.js";
 
 export const errorHandler = (err, req, res, next) => {
   let error = err;
@@ -24,6 +25,10 @@ export const errorHandler = (err, req, res, next) => {
     error = new ApiError(409, `Duplicate value for ${field}`);
   } else if (!(error instanceof ApiError)) {
     error = new ApiError(error?.statusCode || 500, error?.message || "Internal server error");
+  }
+
+  if (error.statusCode >= 500) {
+    logger.error(`${req.method} ${req.originalUrl} - ${error.message}`, { stack: error.stack });
   }
 
   const payload = {

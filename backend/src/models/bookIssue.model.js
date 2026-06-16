@@ -26,7 +26,7 @@ const bookIssueSchema = new mongoose.Schema(
       default: "issued",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const BookIssue = mongoose.model("BookIssue", bookIssueSchema);

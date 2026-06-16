@@ -10,7 +10,7 @@ const userDeviceSchema = new mongoose.Schema(
     },
     fcmToken: { type: String, required: true, unique: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const UserDevice = mongoose.model("UserDevice", userDeviceSchema);

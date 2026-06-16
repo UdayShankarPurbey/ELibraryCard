@@ -19,12 +19,9 @@ const bookFieldDefinitionSchema = new mongoose.Schema(
     options: [{ type: String }],
     sortOrder: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 bookFieldDefinitionSchema.index({ institution: 1, fieldKey: 1 }, { unique: true });
 
-export const BookFieldDefinition = mongoose.model(
-  "BookFieldDefinition",
-  bookFieldDefinitionSchema
-);
+export const BookFieldDefinition = mongoose.model("BookFieldDefinition", bookFieldDefinitionSchema);
