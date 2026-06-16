@@ -1,6 +1,7 @@
 export { Institution } from "./institution.model.js";
 export { User } from "./user.model.js";
 export { Role } from "./role.model.js";
+export { Permission } from "./permission.model.js";
 export { BookFieldDefinition } from "./bookFieldDefinition.model.js";
 export { Book } from "./book.model.js";
 export { BookCopy } from "./bookCopy.model.js";
