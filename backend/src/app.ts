@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import { institutionRouter } from "./routes/institution.routes.js";
 import { permissionRouter } from "./routes/permission.routes.js";
 import { bookFieldRouter } from "./routes/bookField.routes.js";
+import { roleRouter } from "./routes/role.routes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/institutions/:institutionId/permissions", permissionRouter);
 app.use("/api/v1/institutions/:institutionId/book-fields", bookFieldRouter);
 app.use("/api/v1/institutions", institutionRouter);
+app.use("/api/v1/roles", roleRouter);
 
 app.use((_req, _res, next) => next(new ApiError(404, "Route not found")));
 
