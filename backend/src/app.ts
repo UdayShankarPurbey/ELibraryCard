@@ -12,6 +12,8 @@ import { permissionRouter } from "./routes/permission.routes.js";
 import { bookFieldRouter } from "./routes/bookField.routes.js";
 import { roleRouter } from "./routes/role.routes.js";
 import { userRouter } from "./routes/user.routes.js";
+import { bookRouter } from "./routes/book.routes.js";
+import { copyRouter } from "./routes/copy.routes.js";
 
 const app = express();
 
@@ -31,6 +33,8 @@ app.use("/api/v1/institutions/:institutionId/book-fields", bookFieldRouter);
 app.use("/api/v1/institutions", institutionRouter);
 app.use("/api/v1/roles", roleRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/books/:bookId/copies", copyRouter);
+app.use("/api/v1/books", bookRouter);
 
 app.use((_req, _res, next) => next(new ApiError(404, "Route not found")));
 
