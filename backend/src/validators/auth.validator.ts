@@ -9,7 +9,6 @@ export const bootstrapSchema = z.object({
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
-  institutionSlug: z.string().min(1).optional(),
 });
 
 export const changePasswordSchema = z.object({

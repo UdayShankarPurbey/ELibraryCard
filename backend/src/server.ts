@@ -4,6 +4,7 @@ import { env } from "./config/env.js";
 import { connectDb, disconnectDb } from "./config/db.js";
 import { connectRedis, redis } from "./config/redis.js";
 import { initFirebase } from "./config/firebase.js";
+import { seedData } from "./seed/seedData.js";
 import { logger } from "./utils/logger.js";
 
 let server: Server | undefined;
@@ -24,6 +25,10 @@ const shutdown = async (signal: string) => {
 const start = async () => {
   await connectDb();
   logger.info("MongoDB connected");
+
+  if (env.seedOnStart) {
+    await seedData().catch((err) => logger.error(`Seeding failed: ${(err as Error).message}`));
+  }
 
   try {
     await connectRedis();

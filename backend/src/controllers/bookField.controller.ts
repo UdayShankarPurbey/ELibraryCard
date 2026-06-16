@@ -1,9 +1,16 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { resolveInstitutionId } from "../utils/tenant.js";
 import * as bookFieldService from "../services/bookField.service.js";
 
 export const listFields = asyncHandler(async (req, res) => {
   const items = await bookFieldService.listFields(req.params.institutionId as string);
+  res.status(200).json(new ApiResponse(200, items, "Book fields"));
+});
+
+// Tenant-facing: institution derived from the logged-in user (no institutionId in the URL).
+export const listMyFields = asyncHandler(async (req, res) => {
+  const items = await bookFieldService.listFields(resolveInstitutionId(req));
   res.status(200).json(new ApiResponse(200, items, "Book fields"));
 });
 

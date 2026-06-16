@@ -1,11 +1,19 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { resolveInstitutionId } from "../utils/tenant.js";
 import * as permissionService from "../services/permission.service.js";
 import { listPermissionsSchema } from "../validators/permission.validator.js";
 
 export const listPermissions = asyncHandler(async (req, res) => {
   const { group } = listPermissionsSchema.parse(req.query);
   const items = await permissionService.listPermissions(req.params.institutionId as string, group);
+  res.status(200).json(new ApiResponse(200, items, "Permissions"));
+});
+
+// Tenant-facing: institution derived from the logged-in user (no institutionId in the URL).
+export const listMyPermissions = asyncHandler(async (req, res) => {
+  const { group } = listPermissionsSchema.parse(req.query);
+  const items = await permissionService.listPermissions(resolveInstitutionId(req), group);
   res.status(200).json(new ApiResponse(200, items, "Permissions"));
 });
 

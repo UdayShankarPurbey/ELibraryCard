@@ -9,6 +9,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
+    "seed": "tsx src/seed/run.ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
   "license": "MIT",

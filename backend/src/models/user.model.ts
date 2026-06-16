@@ -29,6 +29,7 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 );
 
-userSchema.index({ institution: 1, email: 1 }, { unique: true });
+// Email is globally unique across the platform — one email = one account, one institution.
+userSchema.index({ email: 1 }, { unique: true });
 
 export const User = mongoose.model<IUser>("User", userSchema);
