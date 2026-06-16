@@ -6,6 +6,7 @@ export interface IUser extends Document {
   email: string;
   phone?: string;
   passwordHash: string;
+  refreshTokenHash?: string;
   isSuperAdmin: boolean;
   roles: Types.ObjectId[];
   status: "active" | "inactive";
@@ -20,6 +21,7 @@ const userSchema = new Schema<IUser>(
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, trim: true },
     passwordHash: { type: String, required: true, select: false },
+    refreshTokenHash: { type: String, select: false },
     isSuperAdmin: { type: Boolean, default: false },
     roles: [{ type: Schema.Types.ObjectId, ref: "Role" }],
     status: { type: String, enum: ["active", "inactive"], default: "active" },
