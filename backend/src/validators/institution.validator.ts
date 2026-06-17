@@ -9,6 +9,7 @@ export const createInstitutionSchema = z.object({
   slug: slug.optional(),
   status: z.enum(["active", "suspended"]).optional(),
   seedPermissions: z.boolean().optional(),
+  seedBookFields: z.boolean().optional(),
 });
 
 export const updateInstitutionSchema = z

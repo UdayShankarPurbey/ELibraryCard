@@ -20,6 +20,14 @@ export const ISSUE_STATUS = {
 
 export const FIELD_DATA_TYPES = ["string", "number", "boolean", "date", "enum"] as const;
 
+export const DEFAULT_BOOK_FIELDS_TEMPLATE = [
+  { fieldKey: "bookName", label: "Book name", dataType: "string", isRequired: true },
+  { fieldKey: "author", label: "Author", dataType: "string", isRequired: true },
+  { fieldKey: "description", label: "Description", dataType: "string", isRequired: false },
+  { fieldKey: "quantity", label: "Quantity", dataType: "number", isRequired: false },
+  { fieldKey: "mrp", label: "MRP", dataType: "number", isRequired: false },
+] as const;
+
 export const DEFAULT_LOAN_DAYS = 14;
 export const FINE_PER_DAY = 5;
 
