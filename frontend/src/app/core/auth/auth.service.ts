@@ -2,7 +2,13 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, finalize, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthApi } from '../api/auth-api';
-import { ChangePasswordRequest, LoginRequest, RoleSummary, User } from '../models/auth.model';
+import {
+  ChangePasswordRequest,
+  LoginRequest,
+  RoleSummary,
+  UpdateProfileRequest,
+  User,
+} from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -58,6 +64,13 @@ export class AuthService {
 
   changePassword(body: ChangePasswordRequest): Observable<void> {
     return this.api.changePassword(body).pipe(map(() => void 0));
+  }
+
+  updateProfile(body: UpdateProfileRequest): Observable<void> {
+    return this.api.updateProfile(body).pipe(
+      switchMap(() => this.loadMe()),
+      map(() => void 0),
+    );
   }
 
   refreshSession(): Observable<void> {

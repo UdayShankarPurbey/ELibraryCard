@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ThemeService } from '../../../core/theme/theme.service';
@@ -17,22 +17,52 @@ import { ToastService } from '../../../core/notifications/toast.service';
         </div>
       </div>
 
-      <div class="grid gap-4 sm:grid-cols-2">
-        <div class="rounded-lg border border-border bg-surface p-4 shadow-card">
-          <p class="text-xs uppercase tracking-wide text-muted">Email</p>
-          <p class="mt-1 text-sm text-fg">{{ user()?.email }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-surface p-4 shadow-card">
-          <p class="text-xs uppercase tracking-wide text-muted">Phone</p>
-          <p class="mt-1 text-sm text-fg">{{ user()?.phone || '—' }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-surface p-4 shadow-card">
-          <p class="text-xs uppercase tracking-wide text-muted">Status</p>
-          <p class="mt-1 text-sm text-fg">{{ user()?.status }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-surface p-4 shadow-card">
-          <p class="text-xs uppercase tracking-wide text-muted">Roles</p>
-          <p class="mt-1 text-sm text-fg">{{ roleNames() }}</p>
+      <div class="rounded-lg border border-border bg-surface p-5 shadow-card">
+        <h2 class="mb-4 text-lg font-semibold text-fg">Details</h2>
+        <form class="grid gap-4 sm:grid-cols-2" [formGroup]="form" (ngSubmit)="saveDetails()">
+          <div class="flex flex-col gap-1.5">
+            <label for="fullName" class="text-sm font-medium text-fg">Full name</label>
+            <input id="fullName" formControlName="fullName" class="ctl" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="email" class="text-sm font-medium text-fg">Email</label>
+            <input id="email" type="email" formControlName="email" class="ctl" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="phone" class="text-sm font-medium text-fg">Phone</label>
+            <input id="phone" formControlName="phone" class="ctl" />
+          </div>
+          <div class="flex items-end">
+            <button
+              type="submit"
+              class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg disabled:opacity-60"
+              [disabled]="form.invalid || savingDetails()"
+            >
+              {{ savingDetails() ? 'Saving…' : 'Save details' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-border bg-surface p-5 shadow-card">
+        <h2 class="mb-4 text-lg font-semibold text-fg">Appearance</h2>
+        <div class="inline-flex rounded-md border border-border p-1">
+          <button
+            type="button"
+            class="rounded px-4 py-1.5 text-sm font-medium"
+            [class]="!theme.dark() ? 'bg-primary text-primary-fg' : 'text-muted hover:text-fg'"
+            (click)="theme.setDark(false)"
+          >
+            Light
+          </button>
+          <button
+            type="button"
+            class="rounded px-4 py-1.5 text-sm font-medium"
+            [class]="theme.dark() ? 'bg-primary text-primary-fg' : 'text-muted hover:text-fg'"
+            (click)="theme.setDark(true)"
+          >
+            Dark
+          </button>
         </div>
       </div>
 
@@ -57,7 +87,11 @@ import { ToastService } from '../../../core/notifications/toast.service';
 
       <div class="mt-6 rounded-lg border border-border bg-surface p-5 shadow-card">
         <h2 class="mb-4 text-lg font-semibold text-fg">Change password</h2>
-        <form class="flex max-w-sm flex-col gap-4" [formGroup]="form" (ngSubmit)="changePassword()">
+        <form
+          class="flex max-w-sm flex-col gap-4"
+          [formGroup]="passwordForm"
+          (ngSubmit)="changePassword()"
+        >
           <div class="flex flex-col gap-1.5">
             <label for="old" class="text-sm font-medium text-fg">Current password</label>
             <input id="old" type="password" formControlName="oldPassword" class="ctl" />
@@ -70,9 +104,9 @@ import { ToastService } from '../../../core/notifications/toast.service';
           <button
             type="submit"
             class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg disabled:opacity-60"
-            [disabled]="form.invalid || saving()"
+            [disabled]="passwordForm.invalid || savingPassword()"
           >
-            {{ saving() ? 'Saving…' : 'Update password' }}
+            {{ savingPassword() ? 'Saving…' : 'Update password' }}
           </button>
         </form>
       </div>
@@ -95,12 +129,13 @@ import { ToastService } from '../../../core/notifications/toast.service';
 })
 export class Profile {
   protected readonly auth = inject(AuthService);
-  private readonly theme = inject(ThemeService);
+  protected readonly theme = inject(ThemeService);
   private readonly fb = inject(FormBuilder);
   private readonly toast = inject(ToastService);
 
   protected readonly user = this.auth.currentUser;
-  protected readonly saving = signal(false);
+  protected readonly savingDetails = signal(false);
+  protected readonly savingPassword = signal(false);
 
   protected readonly avatarSrc = computed(() =>
     this.theme.dark() ? '/avatar-dark.svg' : '/avatar.svg',
@@ -108,30 +143,55 @@ export class Profile {
   protected readonly roleLabel = computed(() =>
     this.auth.isSuperAdmin() ? 'Super Admin' : 'Institution user',
   );
-  protected readonly roleNames = computed(() => {
-    if (this.auth.isSuperAdmin()) return '—';
-    const roles = this.auth.roles();
-    return roles.length ? roles.map((r) => r.name).join(', ') : 'None';
-  });
 
   protected readonly form = this.fb.nonNullable.group({
+    fullName: ['', [Validators.required, Validators.minLength(2)]],
+    email: ['', [Validators.required, Validators.email]],
+    phone: [''],
+  });
+
+  protected readonly passwordForm = this.fb.nonNullable.group({
     oldPassword: ['', [Validators.required]],
     newPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
+  constructor() {
+    effect(() => {
+      const current = this.user();
+      if (current) {
+        this.form.patchValue(
+          { fullName: current.fullName, email: current.email, phone: current.phone ?? '' },
+          { emitEvent: false },
+        );
+      }
+    });
+  }
+
+  protected saveDetails(): void {
+    if (this.form.invalid) return;
+    this.savingDetails.set(true);
+    this.auth.updateProfile(this.form.getRawValue()).subscribe({
+      next: () => {
+        this.savingDetails.set(false);
+        this.toast.success('Profile updated');
+      },
+      error: () => this.savingDetails.set(false),
+    });
+  }
+
   protected changePassword(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+    if (this.passwordForm.invalid) {
+      this.passwordForm.markAllAsTouched();
       return;
     }
-    this.saving.set(true);
-    this.auth.changePassword(this.form.getRawValue()).subscribe({
+    this.savingPassword.set(true);
+    this.auth.changePassword(this.passwordForm.getRawValue()).subscribe({
       next: () => {
-        this.saving.set(false);
+        this.savingPassword.set(false);
         this.toast.success('Password updated');
-        this.form.reset({ oldPassword: '', newPassword: '' });
+        this.passwordForm.reset({ oldPassword: '', newPassword: '' });
       },
-      error: () => this.saving.set(false),
+      error: () => this.savingPassword.set(false),
     });
   }
 }

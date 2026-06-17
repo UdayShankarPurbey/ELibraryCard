@@ -1,6 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiClient } from './api-client';
-import { AuthResult, ChangePasswordRequest, LoginRequest, MeResponse } from '../models/auth.model';
+import {
+  AuthResult,
+  ChangePasswordRequest,
+  LoginRequest,
+  MeResponse,
+  UpdateProfileRequest,
+  User,
+} from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
@@ -24,5 +31,9 @@ export class AuthApi {
 
   changePassword(body: ChangePasswordRequest) {
     return this.api.post<null>('/auth/change-password', body);
+  }
+
+  updateProfile(body: UpdateProfileRequest) {
+    return this.api.patch<User>('/auth/me', body);
   }
 }
