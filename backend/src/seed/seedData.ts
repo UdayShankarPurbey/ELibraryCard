@@ -7,7 +7,6 @@ import { User } from "../models/user.model.js";
 import { DEFAULT_PERMISSION_TEMPLATE } from "../utils/constants.js";
 import { logger } from "../utils/logger.js";
 
-// Permission key sets that compose each seeded role, built from DEFAULT_PERMISSION_TEMPLATE.
 const ALL_KEYS = DEFAULT_PERMISSION_TEMPLATE.map((p) => p.key);
 const LIBRARIAN_KEYS = [
   "book.view",
@@ -18,9 +17,9 @@ const LIBRARIAN_KEYS = [
   "issue.create",
   "issue.return",
   "issue.view",
-  "user.view", // needed to look up members when issuing
+  "user.view", // look up members when issuing
 ];
-const MEMBER_KEYS = ["book.view", "issue.view"]; // browse catalog + view own loans
+const MEMBER_KEYS = ["book.view", "issue.view"];
 
 const ROLE_TEMPLATES = [
   { name: "Institution Admin", description: "Full administrative access", permissions: ALL_KEYS },
@@ -33,7 +32,7 @@ interface SeedUser {
   fullName: string;
   email: string;
   password: string;
-  role: string; // role name within the institution
+  role: string;
 }
 
 interface SeedInstitution {
@@ -42,7 +41,6 @@ interface SeedInstitution {
   users: SeedUser[];
 }
 
-// Platform-level super admins (no institution).
 const SUPER_ADMINS = [
   { fullName: "Super Admin", email: "superadmin@elibraryOne.com", password: "superADMIN@123test" },
   { fullName: "Admin", email: "admin@elibraryOne.com", password: "ADMIN@123test" },
@@ -53,26 +51,96 @@ const INSTITUTIONS: SeedInstitution[] = [
     name: "Institution One",
     slug: "institution-one",
     users: [
-      { fullName: "Institution One Admin", email: "institution1@elibraryOne.com", password: "institution1@123test", role: "Institution Admin" },
-      { fullName: "Librarian 1 (Institution 1)", email: "librarian1institution1@elibraryOne.com", password: "librarian1institution1@123test", role: "Librarian" },
-      { fullName: "Librarian 2 (Institution 1)", email: "librarian2institution1@elibraryOne.com", password: "librarian2institution1@123test", role: "Librarian" },
-      { fullName: "Teacher 1 (Institution 1)", email: "teacher1institution1@elibraryOne.com", password: "teacher1institution1@123test", role: "Teacher" },
-      { fullName: "Student 1 (Institution 1)", email: "student1institution1@elibraryOne.com", password: "student1institution1@123test", role: "Student" },
-      { fullName: "Student 2 (Institution 1)", email: "student2institution1@elibraryOne.com", password: "student2institution1@123test", role: "Student" },
+      {
+        fullName: "Institution One Admin",
+        email: "institution1@elibraryOne.com",
+        password: "institution1@123test",
+        role: "Institution Admin",
+      },
+      {
+        fullName: "Librarian 1 (Institution 1)",
+        email: "librarian1institution1@elibraryOne.com",
+        password: "librarian1institution1@123test",
+        role: "Librarian",
+      },
+      {
+        fullName: "Librarian 2 (Institution 1)",
+        email: "librarian2institution1@elibraryOne.com",
+        password: "librarian2institution1@123test",
+        role: "Librarian",
+      },
+      {
+        fullName: "Teacher 1 (Institution 1)",
+        email: "teacher1institution1@elibraryOne.com",
+        password: "teacher1institution1@123test",
+        role: "Teacher",
+      },
+      {
+        fullName: "Student 1 (Institution 1)",
+        email: "student1institution1@elibraryOne.com",
+        password: "student1institution1@123test",
+        role: "Student",
+      },
+      {
+        fullName: "Student 2 (Institution 1)",
+        email: "student2institution1@elibraryOne.com",
+        password: "student2institution1@123test",
+        role: "Student",
+      },
     ],
   },
   {
     name: "Institution Two",
     slug: "institution-two",
     users: [
-      { fullName: "Institution Two Admin", email: "institution2@elibraryOne.com", password: "institution2@123test", role: "Institution Admin" },
-      { fullName: "Librarian 1 (Institution 2)", email: "librarian1institution2@elibraryOne.com", password: "librarian1institution2@123test", role: "Librarian" },
-      { fullName: "Teacher 1 (Institution 2)", email: "teacher1institution2@elibraryOne.com", password: "teacher1institution2@123test", role: "Teacher" },
-      { fullName: "Teacher 2 (Institution 2)", email: "teacher2institution2@elibraryOne.com", password: "teacher2institution2@123test", role: "Teacher" },
-      { fullName: "Student 1 (Institution 2)", email: "student1institution2@elibraryOne.com", password: "student1institution2@123test", role: "Student" },
-      { fullName: "Student 2 (Institution 2)", email: "student2institution2@elibraryOne.com", password: "student2institution2@123test", role: "Student" },
-      { fullName: "Student 3 (Institution 2)", email: "student3institution2@elibraryOne.com", password: "student3institution2@123test", role: "Student" },
-      { fullName: "Student 4 (Institution 2)", email: "student4institution2@elibraryOne.com", password: "student4institution2@123test", role: "Student" },
+      {
+        fullName: "Institution Two Admin",
+        email: "institution2@elibraryOne.com",
+        password: "institution2@123test",
+        role: "Institution Admin",
+      },
+      {
+        fullName: "Librarian 1 (Institution 2)",
+        email: "librarian1institution2@elibraryOne.com",
+        password: "librarian1institution2@123test",
+        role: "Librarian",
+      },
+      {
+        fullName: "Teacher 1 (Institution 2)",
+        email: "teacher1institution2@elibraryOne.com",
+        password: "teacher1institution2@123test",
+        role: "Teacher",
+      },
+      {
+        fullName: "Teacher 2 (Institution 2)",
+        email: "teacher2institution2@elibraryOne.com",
+        password: "teacher2institution2@123test",
+        role: "Teacher",
+      },
+      {
+        fullName: "Student 1 (Institution 2)",
+        email: "student1institution2@elibraryOne.com",
+        password: "student1institution2@123test",
+        role: "Student",
+      },
+      {
+        fullName: "Student 2 (Institution 2)",
+        email: "student2institution2@elibraryOne.com",
+        password: "student2institution2@123test",
+        role: "Student",
+      },
+      {
+        fullName: "Student 3 (Institution 2)",
+        email: "student3institution2@elibraryOne.com",
+        password: "student3institution2@123test",
+        role: "Student",
+      },
+      {
+        fullName: "Student 4 (Institution 2)",
+        email: "student4institution2@elibraryOne.com",
+        password: "student4institution2@123test",
+        role: "Student",
+      },
     ],
   },
 ];
@@ -110,7 +178,6 @@ const ensurePermissions = async (institutionId: Types.ObjectId) => {
   }
 };
 
-// Returns a map of role name -> role _id for the institution.
 const ensureRoles = async (institutionId: Types.ObjectId) => {
   const byName = new Map<string, Types.ObjectId>();
   for (const tpl of ROLE_TEMPLATES) {
@@ -147,8 +214,7 @@ export const seedData = async () => {
     }
   }
 
-  const created =
-    counts.institutions + counts.permissions + counts.roles + counts.users > 0;
+  const created = counts.institutions + counts.permissions + counts.roles + counts.users > 0;
   if (created) {
     logger.info(
       `Seed complete — institutions:${counts.institutions} permissions:${counts.permissions} roles:${counts.roles} users:${counts.users}`,

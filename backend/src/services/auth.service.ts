@@ -54,8 +54,7 @@ export const bootstrapSuperAdmin = async (input: BootstrapInput) => {
 };
 
 export const login = async (input: LoginInput) => {
-  // Email is globally unique, so it alone identifies the account — no institution code needed.
-  // Stored emails are lowercased, so normalize the input to keep login case-insensitive.
+  // Stored emails are lowercased; normalize input to keep login case-insensitive.
   const user = await User.findOne({ email: input.email.toLowerCase() }).select("+passwordHash");
   if (!user) throw new ApiError(401, "Invalid credentials");
 
@@ -63,7 +62,6 @@ export const login = async (input: LoginInput) => {
   if (!ok) throw new ApiError(401, "Invalid credentials");
   if (user.status !== "active") throw new ApiError(403, "Account is inactive");
 
-  // Tenant users carry their institution; verify it's still active before letting them in.
   if (!user.isSuperAdmin) {
     const inst = await Institution.findById(user.institution);
     if (!inst) throw new ApiError(403, "Institution not found");

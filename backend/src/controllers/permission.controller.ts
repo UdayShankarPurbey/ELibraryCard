@@ -10,7 +10,6 @@ export const listPermissions = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, items, "Permissions"));
 });
 
-// Tenant-facing: institution derived from the logged-in user (no institutionId in the URL).
 export const listMyPermissions = asyncHandler(async (req, res) => {
   const { group } = listPermissionsSchema.parse(req.query);
   const items = await permissionService.listPermissions(resolveInstitutionId(req), group);

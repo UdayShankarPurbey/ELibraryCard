@@ -9,7 +9,6 @@ const router = Router();
 
 router.use(verifyJWT);
 
-// Listing is readable by user managers too (to assign roles); writes stay role.manage.
 router.get(
   "/",
   requireAnyPermission("role.manage", "role.view", "user.manage"),

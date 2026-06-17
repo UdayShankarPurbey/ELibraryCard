@@ -33,6 +33,7 @@ export const DEFAULT_PERMISSION_TEMPLATE = [
   { key: "book.delete", label: "Delete books", group: "catalog" },
   { key: "book.view", label: "View books", group: "catalog" },
   { key: "copy.manage", label: "Manage copies", group: "catalog" },
+  { key: "bookfield.manage", label: "Manage book fields", group: "catalog" },
   { key: "issue.create", label: "Issue books", group: "circulation" },
   { key: "issue.return", label: "Return books", group: "circulation" },
   { key: "issue.view", label: "View issues", group: "circulation" },
