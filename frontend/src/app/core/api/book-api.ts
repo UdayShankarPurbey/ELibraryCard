@@ -39,6 +39,10 @@ export class BookApi {
     return this.api.post<BookCopy[]>(`/books/${bookId}/copies`, { barcodes });
   }
 
+  addCopiesByQuantity(bookId: string, quantity: number) {
+    return this.api.post<BookCopy[]>(`/books/${bookId}/copies`, { quantity });
+  }
+
   updateCopyStatus(bookId: string, copyId: string, status: CopyStatus) {
     return this.api.patch<BookCopy>(`/books/${bookId}/copies/${copyId}`, { status });
   }

@@ -27,7 +27,9 @@ import { ToastService } from '../../../core/notifications/toast.service';
               (input)="onPrefixInput($event)"
             />
             <span class="text-xs text-muted">
-              Letters, numbers and hyphens. The sequence number is appended automatically.
+              A zero-padded sequence number is appended automatically. Include a separator if you
+              want one — e.g. <span class="font-mono">ABC-</span> produces
+              <span class="font-mono">ABC-001</span>.
             </span>
           </div>
           <button
@@ -63,6 +65,7 @@ export class InstitutionSettings {
 
   protected readonly saving = signal(false);
   protected readonly preview = signal('ABC-001');
+  private readonly pad = '001';
 
   protected readonly form = this.fb.nonNullable.group({
     barcodePrefix: [''],
@@ -91,7 +94,7 @@ export class InstitutionSettings {
   }
 
   private updatePreview(prefix: string): void {
-    const clean = prefix.trim() || 'ABC';
-    this.preview.set(`${clean}-001`);
+    const clean = prefix.trim();
+    this.preview.set(`${clean || 'ABC-'}${this.pad}`);
   }
 }

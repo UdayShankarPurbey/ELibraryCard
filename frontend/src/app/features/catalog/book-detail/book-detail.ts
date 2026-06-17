@@ -2,7 +2,6 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BookApi } from '../../../core/api/book-api';
 import { BookFieldApi } from '../../../core/api/book-field-api';
-import { SettingsApi } from '../../../core/api/settings-api';
 import { Book, BookCopy, CopyStatus } from '../../../core/models/book.model';
 import { FieldDefinition } from '../../../core/models/book-field.model';
 import { HasPermission } from '../../../shared/directives/has-permission';
@@ -166,7 +165,6 @@ export class BookDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(BookApi);
   private readonly fieldApi = inject(BookFieldApi);
-  private readonly settingsApi = inject(SettingsApi);
   private readonly toast = inject(ToastService);
 
   private readonly id = this.route.snapshot.paramMap.get('id')!;
@@ -176,17 +174,12 @@ export class BookDetail {
   protected readonly fields = signal<FieldDefinition[]>([]);
   protected readonly barcode = signal('');
   protected readonly qty = signal(1);
-  private readonly prefix = signal('');
   protected readonly availableCount = computed(
     () => this.copies().filter((c) => c.status === 'available').length,
   );
 
   constructor() {
     this.fieldApi.listMine().subscribe((list) => this.fields.set(list));
-    this.settingsApi.getMine(true).subscribe({
-      next: (settings) => this.prefix.set(settings.barcodePrefix ?? ''),
-      error: () => {},
-    });
     this.load();
   }
 
@@ -201,8 +194,11 @@ export class BookDetail {
 
   protected addCopy(event: Event): void {
     event.preventDefault();
-    const code = this.barcode().trim() || this.genBarcode(this.copies().length + 1);
-    this.api.addCopies(this.id, [code]).subscribe(() => {
+    const code = this.barcode().trim();
+    const request = code
+      ? this.api.addCopies(this.id, [code])
+      : this.api.addCopiesByQuantity(this.id, 1);
+    request.subscribe(() => {
       this.toast.success('Copy added');
       this.barcode.set('');
       this.load();
@@ -212,18 +208,11 @@ export class BookDetail {
   protected addMany(): void {
     const count = this.qty();
     if (count < 1) return;
-    const start = this.copies().length;
-    const barcodes = Array.from({ length: count }, (_, i) => this.genBarcode(start + i + 1));
-    this.api.addCopies(this.id, barcodes).subscribe(() => {
+    this.api.addCopiesByQuantity(this.id, count).subscribe(() => {
       this.toast.success(`${count} copies added`);
       this.qty.set(1);
       this.load();
     });
-  }
-
-  private genBarcode(seq: number): string {
-    const base = this.prefix().trim() || 'BK';
-    return `${base}-${String(seq).padStart(3, '0')}`;
   }
 
   protected setStatus(copy: BookCopy, status: string): void {

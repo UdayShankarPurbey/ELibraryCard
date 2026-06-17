@@ -6,7 +6,6 @@ import { ToastService } from '../notifications/toast.service';
 import { ApiErrorBody } from '../models/api-response.model';
 import { SKIP_ERROR_TOAST } from './http-context';
 
-// 401 is handled by the refresh flow; 422 validation errors surface on the form.
 const SILENT_STATUSES = new Set([401, 422]);
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {

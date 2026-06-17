@@ -55,8 +55,6 @@ export class ApiClient {
     return source.pipe(map((res) => res.data));
   }
 
-  // When a super admin is managing an institution, its id flows on every request
-  // as ?institutionId= (the backend reads it for tenant-scoped routes, ignores it elsewhere).
   private url(path: string): string {
     const base = `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
     const active = this.context.activeInstitution();

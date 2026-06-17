@@ -25,7 +25,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'My books', route: '/app/my-issues', icon: 'bookmark' },
 ];
 
-// A super admin sees tenant sections only while "managing" an institution (hasContext).
 export function visibleNav(auth: AuthService, hasContext: boolean): NavItem[] {
   const superAdmin = auth.isSuperAdmin();
   return NAV_ITEMS.filter((item) => {

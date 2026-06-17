@@ -6,7 +6,6 @@ import { InstitutionSettings } from '../models/institution-settings.model';
 export class SettingsApi {
   private readonly api = inject(ApiClient);
 
-  // Tenant institution settings (super admin uses it via the active-institution context).
   getMine(silent = false) {
     return this.api.get<InstitutionSettings>('/settings', undefined, { silent });
   }

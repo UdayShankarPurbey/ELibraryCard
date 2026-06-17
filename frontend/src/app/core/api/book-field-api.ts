@@ -6,12 +6,10 @@ import { CreateFieldInput, FieldDefinition } from '../models/book-field.model';
 export class BookFieldApi {
   private readonly api = inject(ApiClient);
 
-  /** Tenant — the current user's institution book-field schema (form/table rendering). */
   listMine() {
     return this.api.get<FieldDefinition[]>('/book-fields');
   }
 
-  // Tenant — manage own institution's schema (super admin uses it via the active-institution context).
   createMine(body: CreateFieldInput) {
     return this.api.post<FieldDefinition>('/book-fields', body);
   }
@@ -32,7 +30,6 @@ export class BookFieldApi {
     return this.api.post<{ added: number }>('/book-fields/seed-defaults');
   }
 
-  // Super admin — per-institution schema management.
   listForInstitution(institutionId: string) {
     return this.api.get<FieldDefinition[]>(`/institutions/${institutionId}/book-fields`);
   }
