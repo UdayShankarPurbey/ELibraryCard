@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
+import { superAdminGuard } from './core/guards/super-admin.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'app' },
@@ -29,6 +30,12 @@ export const routes: Routes = [
         path: 'account/change-password',
         loadComponent: () =>
           import('./features/auth/change-password/change-password').then((m) => m.ChangePassword),
+      },
+      {
+        path: 'institutions',
+        canActivate: [superAdminGuard],
+        loadChildren: () =>
+          import('./features/institutions/institutions.routes').then((m) => m.INSTITUTION_ROUTES),
       },
     ],
   },

@@ -10,3 +10,12 @@ export interface FieldDefinition {
   options: string[];
   sortOrder: number;
 }
+
+export interface CreateFieldInput {
+  fieldKey: string;
+  label: string;
+  dataType: FieldDataType;
+  isRequired?: boolean;
+  options?: string[];
+  sortOrder?: number;
+}
