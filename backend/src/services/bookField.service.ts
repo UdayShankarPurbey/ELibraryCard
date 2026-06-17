@@ -2,6 +2,7 @@ import { BookFieldDefinition } from "../models/bookFieldDefinition.model.js";
 import { Institution } from "../models/institution.model.js";
 import { Book } from "../models/book.model.js";
 import { ApiError } from "../utils/ApiError.js";
+import { DEFAULT_BOOK_FIELDS_TEMPLATE } from "../utils/constants.js";
 import type {
   CreateBookFieldInput,
   UpdateBookFieldInput,
@@ -24,6 +25,22 @@ export const listFields = async (institutionId: string) => {
 export const createField = async (institutionId: string, input: CreateBookFieldInput) => {
   await assertInstitution(institutionId);
   return BookFieldDefinition.create({ ...input, institution: institutionId });
+};
+
+export const seedDefaultFields = async (institutionId: string) => {
+  await assertInstitution(institutionId);
+  const existing = await BookFieldDefinition.find({ institution: institutionId }).select(
+    "fieldKey sortOrder",
+  );
+  const have = new Set(existing.map((f) => f.fieldKey));
+  let nextOrder = existing.reduce((max, f) => Math.max(max, f.sortOrder), -1) + 1;
+  const toAdd = DEFAULT_BOOK_FIELDS_TEMPLATE.filter((f) => !have.has(f.fieldKey)).map((f) => ({
+    ...f,
+    institution: institutionId,
+    sortOrder: nextOrder++,
+  }));
+  if (toAdd.length) await BookFieldDefinition.insertMany(toAdd);
+  return listFields(institutionId);
 };
 
 export const updateField = async (

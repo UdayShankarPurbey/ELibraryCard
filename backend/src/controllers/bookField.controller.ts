@@ -37,6 +37,11 @@ export const reorderMyFields = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, items, "Book fields reordered"));
 });
 
+export const seedMyFields = asyncHandler(async (req, res) => {
+  const items = await bookFieldService.seedDefaultFields(resolveInstitutionId(req));
+  res.status(200).json(new ApiResponse(200, items, "Default book fields seeded"));
+});
+
 export const createField = asyncHandler(async (req, res) => {
   const field = await bookFieldService.createField(req.params.institutionId as string, req.body);
   res.status(201).json(new ApiResponse(201, field, "Book field created"));

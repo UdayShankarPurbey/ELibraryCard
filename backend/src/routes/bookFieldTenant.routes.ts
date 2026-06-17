@@ -20,6 +20,7 @@ router.post(
   validate(createBookFieldSchema),
   bookFieldController.createMyField,
 );
+router.post("/seed-defaults", requirePermission("bookfield.manage"), bookFieldController.seedMyFields);
 router.patch(
   "/reorder",
   requirePermission("bookfield.manage"),

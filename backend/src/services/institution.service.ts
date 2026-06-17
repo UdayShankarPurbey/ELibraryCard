@@ -9,7 +9,7 @@ import { BookIssue } from "../models/bookIssue.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { slugify } from "../utils/slugify.js";
 import { withTransaction } from "../config/db.js";
-import { DEFAULT_PERMISSION_TEMPLATE } from "../utils/constants.js";
+import { DEFAULT_PERMISSION_TEMPLATE, DEFAULT_BOOK_FIELDS_TEMPLATE } from "../utils/constants.js";
 import type {
   CreateInstitutionInput,
   UpdateInstitutionInput,
@@ -40,6 +40,16 @@ export const createInstitution = async (input: CreateInstitutionInput) => {
     if (input.seedPermissions !== false) {
       await Permission.insertMany(
         DEFAULT_PERMISSION_TEMPLATE.map((p) => ({ ...p, institution: institution._id })),
+        opts,
+      );
+    }
+    if (input.seedBookFields !== false) {
+      await BookFieldDefinition.insertMany(
+        DEFAULT_BOOK_FIELDS_TEMPLATE.map((f, i) => ({
+          ...f,
+          institution: institution._id,
+          sortOrder: i,
+        })),
         opts,
       );
     }
