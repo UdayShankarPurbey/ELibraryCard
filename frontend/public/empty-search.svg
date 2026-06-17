@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">No matching records</title>
+  <desc id="desc">Magnifier searching a book record ledger.</desc>
+  <rect x="40" y="39" width="116" height="100" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M62 67h62M62 90h48M62 113h54" stroke="#94A3B8" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="151" cy="94" r="34" fill="#DCE3FF" stroke="#3F4FC4" stroke-width="8"/>
+  <path d="M176 119l25 25" stroke="#3F4FC4" stroke-width="10" stroke-linecap="round"/>
+  <path d="M138 94h26" stroke="#3F4FC4" stroke-width="7" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">No issue records</title>
+  <desc id="desc">Issue and return ledger empty-state illustration.</desc>
+  <rect x="38" y="35" width="132" height="110" rx="18" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M62 64h76M62 88h76M62 112h51" stroke="#94A3B8" stroke-width="7" stroke-linecap="round"/>
+  <rect x="128" y="100" width="54" height="32" rx="10" fill="#DCE3FF"/>
+  <path d="M143 116l8 8 17-20" stroke="#3F4FC4" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M177 73h31M193 58l16 15-16 15" stroke="#3F4FC4" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

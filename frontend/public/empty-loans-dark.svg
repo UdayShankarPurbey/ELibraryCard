@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">No issue records for dark backgrounds</title>
+  <desc id="desc">Issue and return ledger empty-state illustration on dark surfaces.</desc>
+  <rect x="38" y="35" width="132" height="110" rx="18" fill="#1E293B" stroke="#64748B" stroke-width="6"/>
+  <path d="M62 64h76M62 88h76M62 112h51" stroke="#CBD5E1" stroke-width="7" stroke-linecap="round"/>
+  <rect x="128" y="100" width="54" height="32" rx="10" fill="#334155"/>
+  <path d="M143 116l8 8 17-20" stroke="#AEB9FF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M177 73h31M193 58l16 15-16 15" stroke="#AEB9FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

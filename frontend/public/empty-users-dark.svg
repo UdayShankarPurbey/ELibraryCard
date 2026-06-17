@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">No member records for dark backgrounds</title>
+  <desc id="desc">Library member record card illustration on dark surfaces.</desc>
+  <rect x="46" y="42" width="148" height="98" rx="20" fill="#1E293B" stroke="#64748B" stroke-width="6"/>
+  <circle cx="82" cy="86" r="20" fill="#CBD5E1"/>
+  <path d="M57 129c4.6-15.5 13-23 25-23s20.4 7.5 25 23" fill="#AEB9FF"/>
+  <path d="M124 70h42M124 91h34M124 112h46" stroke="#CBD5E1" stroke-width="8" stroke-linecap="round"/>
+  <rect x="151" y="122" width="34" height="16" rx="5" fill="#334155"/>
+  <path d="M158 130h20" stroke="#AEB9FF" stroke-width="4" stroke-linecap="round"/>
+</svg>

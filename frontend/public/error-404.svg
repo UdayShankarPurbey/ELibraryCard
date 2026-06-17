@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
+  <title id="title">404 record not found</title>
+  <desc id="desc">Missing library record with search lens.</desc>
+  <rect x="64" y="54" width="128" height="142" rx="20" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="7"/>
+  <path d="M92 90h72M92 119h52M92 148h38" stroke="#94A3B8" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="207" cy="115" r="43" fill="#DCE3FF" stroke="#3F4FC4" stroke-width="9"/>
+  <path d="M238 146l27 27" stroke="#3F4FC4" stroke-width="12" stroke-linecap="round"/>
+  <path d="M194 104l25 25M219 104l-25 25" stroke="#3F4FC4" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">Default member avatar</title>
+  <desc id="desc">Default library member avatar with a small digital card badge.</desc>
+  <rect width="160" height="160" rx="80" fill="#E2E8F0"/>
+  <circle cx="80" cy="64" r="29" fill="#64748B"/>
+  <path d="M35 142c5.4-27.2 22.5-42.8 45-42.8S119.6 114.8 125 142" fill="#3F4FC4"/>
+  <rect x="94" y="103" width="42" height="28" rx="9" fill="#F8FAFC"/>
+  <path d="M104 115h20M104 122h13" stroke="#3F4FC4" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="132" cy="108" r="11" fill="#DCE3FF"/>
+</svg>

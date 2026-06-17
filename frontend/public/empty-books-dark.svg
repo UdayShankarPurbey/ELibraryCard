@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">No book records for dark backgrounds</title>
+  <desc id="desc">Empty catalog record table illustration on dark surfaces.</desc>
+  <rect x="38" y="36" width="164" height="108" rx="18" fill="#1E293B" stroke="#64748B" stroke-width="6"/>
+  <rect x="58" y="58" width="56" height="16" rx="8" fill="#AEB9FF"/>
+  <path d="M58 91h124M58 115h124" stroke="#334155" stroke-width="7" stroke-linecap="round"/>
+  <path d="M72 91h24M132 91h28M72 115h24M132 115h28" stroke="#CBD5E1" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="184" cy="61" r="16" fill="#334155"/>
+  <path d="M178 61h12M184 55v12" stroke="#AEB9FF" stroke-width="4.5" stroke-linecap="round"/>
+</svg>

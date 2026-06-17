@@ -5,10 +5,10 @@ import { RouterLink } from '@angular/router';
   selector: 'app-forbidden',
   imports: [RouterLink],
   template: `
-    <div class="flex min-h-dvh flex-col items-center justify-center gap-3 bg-bg px-4 text-center">
-      <p class="text-5xl font-semibold text-fg">403</p>
+    <div class="flex min-h-dvh flex-col items-center justify-center gap-4 bg-bg px-4 text-center">
+      <img src="/error-403.svg" alt="Access denied" width="320" height="240" class="w-72" />
       <p class="text-muted">You don't have permission to access this page.</p>
-      <a routerLink="/app" class="mt-2 text-sm font-medium text-primary hover:underline">
+      <a routerLink="/app" class="text-sm font-medium text-primary hover:underline">
         Back to dashboard
       </a>
     </div>

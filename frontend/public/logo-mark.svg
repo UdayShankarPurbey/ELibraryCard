@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">eLibraryCard record mark</title>
+  <desc id="desc">Square mark showing a library ledger, book records, and checked issue status.</desc>
+  <defs>
+    <linearGradient id="g" x1="10" x2="118" y1="10" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5B68E3"/>
+      <stop offset="1" stop-color="#3F4FC4"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#g)"/>
+  <rect x="26" y="24" width="62" height="80" rx="12" fill="#F8FAFC"/>
+  <path d="M40 43h31M40 59h24M40 75h31M40 91h20" stroke="#3F4FC4" stroke-width="6" stroke-linecap="round"/>
+  <path d="M32 24v80" stroke="#CBD5E1" stroke-width="4"/>
+  <rect x="75" y="67" width="33" height="28" rx="8" fill="#DCE3FF" stroke="#FFFFFF" stroke-width="4"/>
+  <path d="M84 81l5 5 10-13" stroke="#3F4FC4" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="76" y="35" width="25" height="16" rx="5" fill="#1E293B"/>
+  <path d="M82 43h13" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+</svg>
