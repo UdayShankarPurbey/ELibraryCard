@@ -14,6 +14,9 @@ import {
   Moon,
   ChevronDown,
   Plus,
+  Pencil,
+  Trash2,
+  KeyRound,
 } from 'lucide-angular';
 
 const ICONS = {
@@ -30,6 +33,9 @@ const ICONS = {
   moon: Moon,
   'chevron-down': ChevronDown,
   plus: Plus,
+  edit: Pencil,
+  trash: Trash2,
+  key: KeyRound,
 } as const;
 
 @Component({

@@ -7,11 +7,11 @@ import { Topbar } from '../topbar/topbar';
   selector: 'app-shell',
   imports: [RouterOutlet, Sidebar, Topbar],
   template: `
-    <div class="flex min-h-dvh bg-bg">
+    <div class="flex h-dvh overflow-hidden bg-bg">
       <app-sidebar />
       <div class="flex min-w-0 flex-1 flex-col">
         <app-topbar />
-        <main class="flex-1 overflow-auto">
+        <main class="min-h-0 flex-1 overflow-auto">
           <router-outlet />
         </main>
       </div>

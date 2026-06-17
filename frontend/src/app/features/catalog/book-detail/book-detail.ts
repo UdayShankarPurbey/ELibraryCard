@@ -6,10 +6,11 @@ import { Book, BookCopy, CopyStatus } from '../../../core/models/book.model';
 import { FieldDefinition } from '../../../core/models/book-field.model';
 import { HasPermission } from '../../../shared/directives/has-permission';
 import { ToastService } from '../../../core/notifications/toast.service';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [RouterLink, HasPermission],
+  imports: [RouterLink, HasPermission, Icon],
   template: `
     <div class="mx-auto max-w-3xl p-6 sm:p-8">
       <a routerLink="/app/catalog" class="text-sm text-muted hover:text-fg">← Catalog</a>
@@ -81,10 +82,12 @@ import { ToastService } from '../../../core/notifications/toast.service';
                           </select>
                           <button
                             type="button"
-                            class="text-xs text-[var(--color-danger-600)] hover:underline"
+                            class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                            aria-label="Delete copy"
+                            title="Delete"
                             (click)="removeCopy(copy)"
                           >
-                            Delete
+                            <app-icon name="trash" [size]="16" />
                           </button>
                         </div>
                       } @else {

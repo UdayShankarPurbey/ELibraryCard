@@ -7,10 +7,11 @@ import { FieldDefinition } from '../../../core/models/book-field.model';
 import { DynamicTable } from '../../../shared/dynamic-table/dynamic-table/dynamic-table';
 import { HasPermission } from '../../../shared/directives/has-permission';
 import { ToastService } from '../../../core/notifications/toast.service';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink, DynamicTable, HasPermission],
+  imports: [RouterLink, DynamicTable, HasPermission, Icon],
   template: `
     <div class="mx-auto max-w-6xl p-6 sm:p-8">
       <div class="mb-6 flex items-center justify-between">
@@ -32,22 +33,31 @@ import { ToastService } from '../../../core/notifications/toast.service';
         emptyMessage="No books in the catalog yet."
       >
         <ng-template #rowActions let-row>
-          <div class="flex justify-end gap-3 text-xs font-medium">
-            <a [routerLink]="[$any(row)._id]" class="text-primary hover:underline">Copies</a>
+          <div class="flex items-center justify-end gap-1">
+            <a
+              [routerLink]="[$any(row)._id]"
+              class="mr-1 text-xs font-medium text-primary hover:underline"
+            >
+              Copies
+            </a>
             <a
               *appHasPermission="'book.update'"
               [routerLink]="[$any(row)._id, 'edit']"
-              class="text-fg hover:underline"
+              class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+              aria-label="Edit book"
+              title="Edit"
             >
-              Edit
+              <app-icon name="edit" [size]="16" />
             </a>
             <button
               *appHasPermission="'book.delete'"
               type="button"
-              class="text-[var(--color-danger-600)] hover:underline"
+              class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+              aria-label="Delete book"
+              title="Delete"
               (click)="remove($any(row))"
             >
-              Delete
+              <app-icon name="trash" [size]="16" />
             </button>
           </div>
         </ng-template>

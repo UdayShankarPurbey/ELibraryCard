@@ -5,10 +5,11 @@ import { PermissionApi } from '../../../core/api/permission-api';
 import { Role } from '../../../core/models/role.model';
 import { Permission } from '../../../core/models/permission.model';
 import { ToastService } from '../../../core/notifications/toast.service';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-role-list',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Icon],
   template: `
     <div class="mx-auto max-w-4xl p-6 sm:p-8">
       <div class="mb-6 flex items-center justify-between">
@@ -103,16 +104,24 @@ import { ToastService } from '../../../core/notifications/toast.service';
                 <td class="px-4 py-3 text-muted">{{ role.description || '—' }}</td>
                 <td class="px-4 py-3 text-muted">{{ role.permissions.length }}</td>
                 <td class="px-4 py-3 text-right">
-                  <div class="flex justify-end gap-3 text-xs font-medium">
-                    <button type="button" class="text-fg hover:underline" (click)="openEdit(role)">
-                      Edit
+                  <div class="flex justify-end gap-1">
+                    <button
+                      type="button"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+                      aria-label="Edit role"
+                      title="Edit"
+                      (click)="openEdit(role)"
+                    >
+                      <app-icon name="edit" [size]="16" />
                     </button>
                     <button
                       type="button"
-                      class="text-[var(--color-danger-600)] hover:underline"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                      aria-label="Delete role"
+                      title="Delete"
                       (click)="remove(role)"
                     >
-                      Delete
+                      <app-icon name="trash" [size]="16" />
                     </button>
                   </div>
                 </td>

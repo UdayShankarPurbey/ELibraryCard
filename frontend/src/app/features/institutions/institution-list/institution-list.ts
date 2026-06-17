@@ -6,10 +6,11 @@ import { InstitutionApi } from '../../../core/api/institution-api';
 import { Institution } from '../../../core/models/institution.model';
 import { ContextService } from '../../../core/context/context.service';
 import { ToastService } from '../../../core/notifications/toast.service';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-institution-list',
-  imports: [ReactiveFormsModule, RouterLink, DatePipe],
+  imports: [ReactiveFormsModule, RouterLink, DatePipe, Icon],
   template: `
     <div class="mx-auto max-w-5xl p-6 sm:p-8">
       <div class="mb-6 flex items-center justify-between">
@@ -112,15 +113,23 @@ import { ToastService } from '../../../core/notifications/toast.service';
                     >
                       Book fields
                     </a>
-                    <button type="button" class="text-fg hover:underline" (click)="openEdit(inst)">
-                      Edit
+                    <button
+                      type="button"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+                      aria-label="Edit institution"
+                      title="Edit"
+                      (click)="openEdit(inst)"
+                    >
+                      <app-icon name="edit" [size]="16" />
                     </button>
                     <button
                       type="button"
-                      class="text-[var(--color-danger-600)] hover:underline"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                      aria-label="Delete institution"
+                      title="Delete"
                       (click)="remove(inst)"
                     >
-                      Delete
+                      <app-icon name="trash" [size]="16" />
                     </button>
                   </div>
                 </td>

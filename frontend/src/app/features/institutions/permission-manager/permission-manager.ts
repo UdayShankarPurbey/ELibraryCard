@@ -5,10 +5,11 @@ import { PermissionApi } from '../../../core/api/permission-api';
 import { InstitutionApi } from '../../../core/api/institution-api';
 import { Permission } from '../../../core/models/permission.model';
 import { ToastService } from '../../../core/notifications/toast.service';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-permission-manager',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, Icon],
   template: `
     <div class="mx-auto max-w-4xl p-6 sm:p-8">
       <a routerLink="/app/institutions" class="text-sm text-muted hover:text-fg">← Institutions</a>
@@ -75,10 +76,12 @@ import { ToastService } from '../../../core/notifications/toast.service';
                 <td class="px-4 py-3 text-right">
                   <button
                     type="button"
-                    class="text-xs font-medium text-[var(--color-danger-600)] hover:underline"
+                    class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                    aria-label="Delete permission"
+                    title="Delete"
                     (click)="remove(perm)"
                   >
-                    Delete
+                    <app-icon name="trash" [size]="16" />
                   </button>
                 </td>
               </tr>

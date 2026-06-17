@@ -7,10 +7,11 @@ import { Role } from '../../../core/models/role.model';
 import { ThemeService } from '../../../core/theme/theme.service';
 import { ToastService } from '../../../core/notifications/toast.service';
 import { HasPermission } from '../../../shared/directives/has-permission';
+import { Icon } from '../../../shared/ui/icon/icon';
 
 @Component({
   selector: 'app-user-list',
-  imports: [ReactiveFormsModule, HasPermission],
+  imports: [ReactiveFormsModule, HasPermission, Icon],
   template: `
     <div class="mx-auto max-w-5xl p-6 sm:p-8">
       <div class="mb-6 flex items-center justify-between gap-4">
@@ -137,27 +138,33 @@ import { HasPermission } from '../../../shared/directives/has-permission';
                     </span>
                   </td>
                   <td class="px-4 py-3" *appHasPermission="'user.manage'">
-                    <div class="flex justify-end gap-3 text-xs font-medium">
+                    <div class="flex justify-end gap-1">
                       <button
                         type="button"
-                        class="text-fg hover:underline"
+                        class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+                        aria-label="Edit user"
+                        title="Edit"
                         (click)="openEdit(user)"
                       >
-                        Edit
+                        <app-icon name="edit" [size]="16" />
                       </button>
                       <button
                         type="button"
-                        class="text-fg hover:underline"
+                        class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+                        aria-label="Reset password"
+                        title="Reset password"
                         (click)="resetPassword(user)"
                       >
-                        Reset password
+                        <app-icon name="key" [size]="16" />
                       </button>
                       <button
                         type="button"
-                        class="text-[var(--color-danger-600)] hover:underline"
+                        class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                        aria-label="Delete user"
+                        title="Delete"
                         (click)="remove(user)"
                       >
-                        Delete
+                        <app-icon name="trash" [size]="16" />
                       </button>
                     </div>
                   </td>
