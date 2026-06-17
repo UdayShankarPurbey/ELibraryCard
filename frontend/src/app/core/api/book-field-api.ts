@@ -28,6 +28,10 @@ export class BookFieldApi {
     return this.api.patch<FieldDefinition[]>('/book-fields/reorder', { order });
   }
 
+  seedDefaultsMine() {
+    return this.api.post<{ added: number }>('/book-fields/seed-defaults');
+  }
+
   // Super admin — per-institution schema management.
   listForInstitution(institutionId: string) {
     return this.api.get<FieldDefinition[]>(`/institutions/${institutionId}/book-fields`);

@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BookApi } from '../../../core/api/book-api';
 import { BookFieldApi } from '../../../core/api/book-field-api';
+import { SettingsApi } from '../../../core/api/settings-api';
 import { Book, BookCopy, CopyStatus } from '../../../core/models/book.model';
 import { FieldDefinition } from '../../../core/models/book-field.model';
 import { HasPermission } from '../../../shared/directives/has-permission';
@@ -36,22 +37,64 @@ import { Icon } from '../../../shared/ui/icon/icon';
         </div>
 
         <div class="mt-8">
-          <div class="mb-3 flex items-center justify-between">
+          <div class="mb-3 flex items-center gap-3">
             <h2 class="text-lg font-semibold text-fg">Copies</h2>
-            <form *appHasPermission="'copy.manage'" class="flex gap-2" (submit)="addCopy($event)">
-              <input
-                placeholder="Barcode"
-                class="ctl"
-                [value]="barcode()"
-                (input)="barcode.set($any($event.target).value)"
-              />
-              <button
-                type="submit"
-                class="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-fg"
-              >
-                Add
-              </button>
-            </form>
+            <span class="text-sm text-muted">
+              {{ availableCount() }} of {{ copies().length }} available
+            </span>
+          </div>
+
+          <div
+            *appHasPermission="'copy.manage'"
+            class="mb-4 rounded-lg border border-border bg-surface p-4 shadow-card"
+          >
+            <p class="mb-3 text-sm font-medium text-fg">Add copies</p>
+            <div class="flex flex-wrap items-end gap-4">
+              <form class="flex items-end gap-2" (submit)="addCopy($event)">
+                <div class="flex flex-col gap-1">
+                  <label for="barcode" class="text-xs text-muted">
+                    Barcode <span class="text-muted">(optional — auto-generated if blank)</span>
+                  </label>
+                  <input
+                    id="barcode"
+                    class="ctl"
+                    placeholder="leave blank to auto-generate"
+                    [value]="barcode()"
+                    (input)="barcode.set($any($event.target).value)"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-fg"
+                >
+                  Add copy
+                </button>
+              </form>
+
+              <span class="pb-2 text-xs text-muted">or</span>
+
+              <div class="flex items-end gap-2">
+                <div class="flex flex-col gap-1">
+                  <label for="qty" class="text-xs text-muted">Quantity (auto barcodes)</label>
+                  <input
+                    id="qty"
+                    type="number"
+                    min="1"
+                    class="ctl w-28"
+                    [value]="qty()"
+                    (input)="qty.set(+$any($event.target).value)"
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="rounded-md border border-border px-3 py-2 text-sm font-medium text-fg hover:bg-bg disabled:opacity-60"
+                  [disabled]="qty() < 1"
+                  (click)="addMany()"
+                >
+                  Generate {{ qty() }} copies
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="overflow-x-auto rounded-lg border border-border bg-surface">
@@ -123,6 +166,7 @@ export class BookDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(BookApi);
   private readonly fieldApi = inject(BookFieldApi);
+  private readonly settingsApi = inject(SettingsApi);
   private readonly toast = inject(ToastService);
 
   private readonly id = this.route.snapshot.paramMap.get('id')!;
@@ -131,9 +175,18 @@ export class BookDetail {
   protected readonly copies = signal<BookCopy[]>([]);
   protected readonly fields = signal<FieldDefinition[]>([]);
   protected readonly barcode = signal('');
+  protected readonly qty = signal(1);
+  private readonly prefix = signal('');
+  protected readonly availableCount = computed(
+    () => this.copies().filter((c) => c.status === 'available').length,
+  );
 
   constructor() {
     this.fieldApi.listMine().subscribe((list) => this.fields.set(list));
+    this.settingsApi.getMine(true).subscribe({
+      next: (settings) => this.prefix.set(settings.barcodePrefix ?? ''),
+      error: () => {},
+    });
     this.load();
   }
 
@@ -148,13 +201,29 @@ export class BookDetail {
 
   protected addCopy(event: Event): void {
     event.preventDefault();
-    const code = this.barcode().trim();
-    if (!code) return;
+    const code = this.barcode().trim() || this.genBarcode(this.copies().length + 1);
     this.api.addCopies(this.id, [code]).subscribe(() => {
       this.toast.success('Copy added');
       this.barcode.set('');
       this.load();
     });
+  }
+
+  protected addMany(): void {
+    const count = this.qty();
+    if (count < 1) return;
+    const start = this.copies().length;
+    const barcodes = Array.from({ length: count }, (_, i) => this.genBarcode(start + i + 1));
+    this.api.addCopies(this.id, barcodes).subscribe(() => {
+      this.toast.success(`${count} copies added`);
+      this.qty.set(1);
+      this.load();
+    });
+  }
+
+  private genBarcode(seq: number): string {
+    const base = this.prefix().trim() || 'BK';
+    return `${base}-${String(seq).padStart(3, '0')}`;
   }
 
   protected setStatus(copy: BookCopy, status: string): void {

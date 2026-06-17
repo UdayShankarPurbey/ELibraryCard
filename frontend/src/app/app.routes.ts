@@ -69,6 +69,15 @@ export const routes: Routes = [
           import('./features/catalog/field-settings/field-settings').then((m) => m.FieldSettings),
       },
       {
+        path: 'settings',
+        canActivate: [permissionGuard],
+        data: { permissions: ['settings.manage'] },
+        loadComponent: () =>
+          import('./features/settings/institution-settings/institution-settings').then(
+            (m) => m.InstitutionSettings,
+          ),
+      },
+      {
         path: 'circulation',
         canActivate: [permissionGuard],
         data: { permissions: ['issue.view', 'issue.create', 'issue.return'], mode: 'any' },

@@ -12,13 +12,22 @@ import { Icon } from '../../../shared/ui/icon/icon';
     <div class="mx-auto max-w-4xl p-6 sm:p-8">
       <div class="mb-2 flex items-center justify-between">
         <h1 class="text-2xl font-semibold text-fg">Book fields</h1>
-        <button
-          type="button"
-          class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)]"
-          (click)="openCreate()"
-        >
-          Add field
-        </button>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            class="rounded-md border border-border px-4 py-2 text-sm font-medium text-fg hover:bg-bg"
+            (click)="seedDefaults()"
+          >
+            Seed defaults
+          </button>
+          <button
+            type="button"
+            class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)]"
+            (click)="openCreate()"
+          >
+            Add field
+          </button>
+        </div>
       </div>
       <p class="mb-6 text-sm text-muted">
         These columns define a book record for your institution. They drive the add-book form, the
@@ -229,6 +238,13 @@ export class FieldSettings {
     request.subscribe(() => {
       this.toast.success(id ? 'Field updated' : 'Field added');
       this.showForm.set(false);
+      this.load();
+    });
+  }
+
+  protected seedDefaults(): void {
+    this.api.seedDefaultsMine().subscribe((res) => {
+      this.toast.success(`Added ${res.added} default field(s)`);
       this.load();
     });
   }

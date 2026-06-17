@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { API_BASE_URL } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { QueryParams } from '../models/common.model';
 import { ContextService } from '../context/context.service';
+import { SKIP_ERROR_TOAST } from '../http/http-context';
 
 @Injectable({ providedIn: 'root' })
 export class ApiClient {
@@ -12,11 +13,12 @@ export class ApiClient {
   private readonly baseUrl = inject(API_BASE_URL);
   private readonly context = inject(ContextService);
 
-  get<T>(path: string, params?: QueryParams): Observable<T> {
+  get<T>(path: string, params?: QueryParams, options?: { silent?: boolean }): Observable<T> {
     return this.unwrap(
       this.http.get<ApiResponse<T>>(this.url(path), {
         params: this.toParams(params),
         withCredentials: true,
+        context: options?.silent ? new HttpContext().set(SKIP_ERROR_TOAST, true) : undefined,
       }),
     );
   }
