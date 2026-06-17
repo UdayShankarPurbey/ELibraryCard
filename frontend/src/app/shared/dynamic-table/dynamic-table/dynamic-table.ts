@@ -35,7 +35,11 @@ type Row = Record<string, unknown>;
                         {{ cell(row, col.fieldKey) ? 'Yes' : 'No' }}
                       }
                       @case ('date') {
-                        {{ cell(row, col.fieldKey) ? (asDate(cell(row, col.fieldKey)) | date: 'mediumDate') : '—' }}
+                        {{
+                          cell(row, col.fieldKey)
+                            ? (asDate(cell(row, col.fieldKey)) | date: 'mediumDate')
+                            : '—'
+                        }}
                       }
                       @default {
                         {{ display(cell(row, col.fieldKey)) }}

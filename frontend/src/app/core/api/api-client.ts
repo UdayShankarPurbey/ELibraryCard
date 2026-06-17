@@ -32,9 +32,7 @@ export class ApiClient {
   }
 
   delete<T>(path: string): Observable<T> {
-    return this.unwrap(
-      this.http.delete<ApiResponse<T>>(this.url(path), { withCredentials: true }),
-    );
+    return this.unwrap(this.http.delete<ApiResponse<T>>(this.url(path), { withCredentials: true }));
   }
 
   postForm<T>(path: string, form: FormData): Observable<T> {

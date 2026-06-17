@@ -104,7 +104,9 @@ import { HasPermission } from '../../../shared/directives/has-permission';
       }
 
       @if (users().length === 0) {
-        <div class="flex flex-col items-center gap-3 rounded-lg border border-border bg-surface py-12">
+        <div
+          class="flex flex-col items-center gap-3 rounded-lg border border-border bg-surface py-12"
+        >
           <img [src]="emptyImg()" alt="" width="240" height="180" class="w-48" />
           <p class="text-sm text-muted">No users found.</p>
         </div>
@@ -127,16 +129,27 @@ import { HasPermission } from '../../../shared/directives/has-permission';
                   <td class="px-4 py-3 text-muted">{{ user.email }}</td>
                   <td class="px-4 py-3 text-muted">{{ roleNames(user) || '—' }}</td>
                   <td class="px-4 py-3">
-                    <span class="rounded-full px-2 py-0.5 text-xs font-medium" [class]="badge(user)">
+                    <span
+                      class="rounded-full px-2 py-0.5 text-xs font-medium"
+                      [class]="badge(user)"
+                    >
                       {{ user.status }}
                     </span>
                   </td>
                   <td class="px-4 py-3" *appHasPermission="'user.manage'">
                     <div class="flex justify-end gap-3 text-xs font-medium">
-                      <button type="button" class="text-fg hover:underline" (click)="openEdit(user)">
+                      <button
+                        type="button"
+                        class="text-fg hover:underline"
+                        (click)="openEdit(user)"
+                      >
                         Edit
                       </button>
-                      <button type="button" class="text-fg hover:underline" (click)="resetPassword(user)">
+                      <button
+                        type="button"
+                        class="text-fg hover:underline"
+                        (click)="resetPassword(user)"
+                      >
                         Reset password
                       </button>
                       <button
@@ -305,8 +318,8 @@ export class UserList {
 
   private load(): void {
     const search = this.search().trim();
-    this.api.list({ limit: 100, search: search || undefined }).subscribe((res) =>
-      this.users.set(res.items),
-    );
+    this.api
+      .list({ limit: 100, search: search || undefined })
+      .subscribe((res) => this.users.set(res.items));
   }
 }

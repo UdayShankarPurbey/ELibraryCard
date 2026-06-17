@@ -1,11 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiClient } from './api-client';
 import { Paginated, QueryParams } from '../models/common.model';
-import {
-  CreateInstitution,
-  Institution,
-  UpdateInstitution,
-} from '../models/institution.model';
+import { CreateInstitution, Institution, UpdateInstitution } from '../models/institution.model';
 
 @Injectable({ providedIn: 'root' })
 export class InstitutionApi {

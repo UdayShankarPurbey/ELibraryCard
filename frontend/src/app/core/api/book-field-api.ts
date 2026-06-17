@@ -32,9 +32,8 @@ export class BookFieldApi {
   }
 
   reorder(institutionId: string, order: string[]) {
-    return this.api.patch<FieldDefinition[]>(
-      `/institutions/${institutionId}/book-fields/reorder`,
-      { order },
-    );
+    return this.api.patch<FieldDefinition[]>(`/institutions/${institutionId}/book-fields/reorder`, {
+      order,
+    });
   }
 }

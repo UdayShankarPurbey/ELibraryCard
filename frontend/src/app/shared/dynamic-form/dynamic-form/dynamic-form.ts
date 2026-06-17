@@ -71,9 +71,13 @@ import { FieldDefinition } from '../../../core/models/book-field.model';
           }
 
           @if (invalid(field.fieldKey)) {
-            <span class="text-xs text-[var(--color-danger-600)]">{{ field.label }} is required.</span>
+            <span class="text-xs text-[var(--color-danger-600)]"
+              >{{ field.label }} is required.</span
+            >
           } @else if (serverErrors()[field.fieldKey]) {
-            <span class="text-xs text-[var(--color-danger-600)]">{{ serverErrors()[field.fieldKey] }}</span>
+            <span class="text-xs text-[var(--color-danger-600)]">{{
+              serverErrors()[field.fieldKey]
+            }}</span>
           }
         </div>
       }

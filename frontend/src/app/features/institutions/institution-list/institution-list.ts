@@ -92,10 +92,16 @@ import { ToastService } from '../../../core/notifications/toast.service';
                 <td class="px-4 py-3 text-muted">{{ inst.createdAt | date: 'mediumDate' }}</td>
                 <td class="px-4 py-3">
                   <div class="flex justify-end gap-3 text-xs font-medium">
-                    <a [routerLink]="[inst._id, 'permissions']" class="text-primary hover:underline">
+                    <a
+                      [routerLink]="[inst._id, 'permissions']"
+                      class="text-primary hover:underline"
+                    >
                       Permissions
                     </a>
-                    <a [routerLink]="[inst._id, 'book-fields']" class="text-primary hover:underline">
+                    <a
+                      [routerLink]="[inst._id, 'book-fields']"
+                      class="text-primary hover:underline"
+                    >
                       Book fields
                     </a>
                     <button type="button" class="text-fg hover:underline" (click)="openEdit(inst)">
@@ -172,7 +178,12 @@ export class InstitutionList {
 
   protected openEdit(inst: Institution): void {
     this.editingId.set(inst._id);
-    this.form.reset({ name: inst.name, slug: inst.slug, status: inst.status, seedPermissions: false });
+    this.form.reset({
+      name: inst.name,
+      slug: inst.slug,
+      status: inst.status,
+      seedPermissions: false,
+    });
     this.showForm.set(true);
   }
 

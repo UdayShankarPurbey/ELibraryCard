@@ -115,7 +115,9 @@ import { ToastService } from '../../../core/notifications/toast.service';
               </tr>
             } @empty {
               <tr>
-                <td colspan="7" class="px-4 py-10 text-center text-muted">No fields defined yet.</td>
+                <td colspan="7" class="px-4 py-10 text-center text-muted">
+                  No fields defined yet.
+                </td>
               </tr>
             }
           </tbody>
@@ -162,7 +164,9 @@ export class BookFieldManager {
   });
 
   constructor() {
-    this.institutionApi.get(this.institutionId).subscribe((inst) => this.institutionName.set(inst.name));
+    this.institutionApi
+      .get(this.institutionId)
+      .subscribe((inst) => this.institutionName.set(inst.name));
     this.load();
   }
 
@@ -188,7 +192,13 @@ export class BookFieldManager {
       })
       .subscribe(() => {
         this.toast.success('Field added');
-        this.form.reset({ fieldKey: '', label: '', dataType: 'string', isRequired: false, options: '' });
+        this.form.reset({
+          fieldKey: '',
+          label: '',
+          dataType: 'string',
+          isRequired: false,
+          options: '',
+        });
         this.showForm.set(false);
         this.load();
       });

@@ -55,15 +55,15 @@ import { ToastService } from '../../../core/notifications/toast.service';
                         [checked]="isSelected(perm.key)"
                         (change)="toggle(perm.key)"
                       />
-                      <span>{{ perm.label }} <span class="text-muted">({{ perm.key }})</span></span>
+                      <span
+                        >{{ perm.label }} <span class="text-muted">({{ perm.key }})</span></span
+                      >
                     </label>
                   }
                 </div>
               </fieldset>
             } @empty {
-              <p class="text-sm text-muted">
-                No permissions in this institution's catalog yet.
-              </p>
+              <p class="text-sm text-muted">No permissions in this institution's catalog yet.</p>
             }
           </div>
 

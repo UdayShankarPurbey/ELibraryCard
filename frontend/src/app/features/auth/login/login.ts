@@ -87,15 +87,15 @@ export class Login {
     const { email, password } = this.form.getRawValue();
 
     this.auth.login({ email, password }).subscribe({
-        next: (user) => {
-          this.loading.set(false);
-          if (user) this.router.navigateByUrl('/app');
-          else this.error.set('Login failed. Please try again.');
-        },
-        error: (err) => {
-          this.loading.set(false);
-          this.error.set(err?.error?.message ?? 'Invalid credentials.');
-        },
-      });
+      next: (user) => {
+        this.loading.set(false);
+        if (user) this.router.navigateByUrl('/app');
+        else this.error.set('Login failed. Please try again.');
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.error.set(err?.error?.message ?? 'Invalid credentials.');
+      },
+    });
   }
 }

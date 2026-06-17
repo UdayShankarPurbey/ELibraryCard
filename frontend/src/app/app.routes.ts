@@ -50,6 +50,27 @@ export const routes: Routes = [
         data: { permissions: ['user.view', 'user.manage'], mode: 'any' },
         loadComponent: () => import('./features/users/user-list/user-list').then((m) => m.UserList),
       },
+      {
+        path: 'catalog',
+        canActivate: [permissionGuard],
+        data: { permissions: ['book.view'] },
+        loadChildren: () =>
+          import('./features/catalog/catalog.routes').then((m) => m.CATALOG_ROUTES),
+      },
+      {
+        path: 'circulation',
+        canActivate: [permissionGuard],
+        data: { permissions: ['issue.view', 'issue.create', 'issue.return'], mode: 'any' },
+        loadComponent: () =>
+          import('./features/circulation/circulation-desk/circulation-desk').then(
+            (m) => m.CirculationDesk,
+          ),
+      },
+      {
+        path: 'my-issues',
+        loadComponent: () =>
+          import('./features/circulation/my-issues/my-issues').then((m) => m.MyIssues),
+      },
     ],
   },
   {

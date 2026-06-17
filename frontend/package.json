@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
-    "dev": "ng serve --port 4214"
+    "dev": "ng serve --port 4214",
+    "format": "prettier --write \"src/**/*.{ts,html,css,scss,md,json}\""
   },
   "private": true,
   "packageManager": "npm@10.9.8",

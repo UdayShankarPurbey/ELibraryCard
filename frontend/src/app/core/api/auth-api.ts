@@ -1,11 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiClient } from './api-client';
-import {
-  AuthResult,
-  ChangePasswordRequest,
-  LoginRequest,
-  MeResponse,
-} from '../models/auth.model';
+import { AuthResult, ChangePasswordRequest, LoginRequest, MeResponse } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {

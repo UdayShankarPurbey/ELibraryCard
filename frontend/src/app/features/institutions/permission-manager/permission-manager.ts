@@ -128,7 +128,9 @@ export class PermissionManager {
   });
 
   constructor() {
-    this.institutionApi.get(this.institutionId).subscribe((inst) => this.institutionName.set(inst.name));
+    this.institutionApi
+      .get(this.institutionId)
+      .subscribe((inst) => this.institutionName.set(inst.name));
     this.load();
   }
 
