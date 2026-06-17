@@ -10,6 +10,10 @@ export const CATALOG_ROUTES: Routes = [
     loadComponent: () => import('./book-form/book-form').then((m) => m.BookForm),
   },
   {
+    path: 'bulk',
+    loadComponent: () => import('./bulk-upload/bulk-upload').then((m) => m.BulkUpload),
+  },
+  {
     path: ':id/edit',
     loadComponent: () => import('./book-form/book-form').then((m) => m.BookForm),
   },

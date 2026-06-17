@@ -17,6 +17,7 @@ import {
   Pencil,
   Trash2,
   KeyRound,
+  SlidersHorizontal,
 } from 'lucide-angular';
 
 const ICONS = {
@@ -36,6 +37,7 @@ const ICONS = {
   edit: Pencil,
   trash: Trash2,
   key: KeyRound,
+  fields: SlidersHorizontal,
 } as const;
 
 @Component({

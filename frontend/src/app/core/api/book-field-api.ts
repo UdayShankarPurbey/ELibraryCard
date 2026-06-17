@@ -11,6 +11,23 @@ export class BookFieldApi {
     return this.api.get<FieldDefinition[]>('/book-fields');
   }
 
+  // Tenant — manage own institution's schema (super admin uses it via the active-institution context).
+  createMine(body: CreateFieldInput) {
+    return this.api.post<FieldDefinition>('/book-fields', body);
+  }
+
+  updateMine(fieldId: string, body: Partial<CreateFieldInput>) {
+    return this.api.patch<FieldDefinition>(`/book-fields/${fieldId}`, body);
+  }
+
+  removeMine(fieldId: string) {
+    return this.api.delete<null>(`/book-fields/${fieldId}`);
+  }
+
+  reorderMine(order: string[]) {
+    return this.api.patch<FieldDefinition[]>('/book-fields/reorder', { order });
+  }
+
   // Super admin — per-institution schema management.
   listForInstitution(institutionId: string) {
     return this.api.get<FieldDefinition[]>(`/institutions/${institutionId}/book-fields`);

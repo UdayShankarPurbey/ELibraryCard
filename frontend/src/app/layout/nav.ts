@@ -14,6 +14,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Roles', route: '/app/roles', icon: 'shield', anyOf: ['role.manage'] },
   { label: 'Users', route: '/app/users', icon: 'users', anyOf: ['user.view', 'user.manage'] },
   { label: 'Catalog', route: '/app/catalog', icon: 'book', anyOf: ['book.view'] },
+  { label: 'Book fields', route: '/app/book-fields', icon: 'fields', anyOf: ['bookfield.manage'] },
   {
     label: 'Circulation',
     route: '/app/circulation',

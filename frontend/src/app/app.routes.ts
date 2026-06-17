@@ -62,6 +62,13 @@ export const routes: Routes = [
           import('./features/catalog/catalog.routes').then((m) => m.CATALOG_ROUTES),
       },
       {
+        path: 'book-fields',
+        canActivate: [permissionGuard],
+        data: { permissions: ['bookfield.manage'] },
+        loadComponent: () =>
+          import('./features/catalog/field-settings/field-settings').then((m) => m.FieldSettings),
+      },
+      {
         path: 'circulation',
         canActivate: [permissionGuard],
         data: { permissions: ['issue.view', 'issue.create', 'issue.return'], mode: 'any' },

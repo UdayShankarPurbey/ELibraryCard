@@ -16,13 +16,22 @@ import { Icon } from '../../../shared/ui/icon/icon';
     <div class="mx-auto max-w-6xl p-6 sm:p-8">
       <div class="mb-6 flex items-center justify-between">
         <h1 class="text-2xl font-semibold text-fg">Catalog</h1>
-        <a
-          *appHasPermission="'book.create'"
-          routerLink="new"
-          class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)]"
-        >
-          Add book
-        </a>
+        <div class="flex gap-2">
+          <a
+            *appHasPermission="'book.create'"
+            routerLink="bulk"
+            class="rounded-md border border-border px-4 py-2 text-sm font-medium text-fg hover:bg-bg"
+          >
+            Bulk upload
+          </a>
+          <a
+            *appHasPermission="'book.create'"
+            routerLink="new"
+            class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)]"
+          >
+            Add book
+          </a>
+        </div>
       </div>
 
       <app-dynamic-table

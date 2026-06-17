@@ -19,6 +19,10 @@ export class BookApi {
     return this.api.postForm<Book>('/books', form);
   }
 
+  createWithData(data: Record<string, unknown>) {
+    return this.api.post<Book>('/books', { data });
+  }
+
   update(id: string, form: FormData) {
     return this.api.patchForm<Book>(`/books/${id}`, form);
   }

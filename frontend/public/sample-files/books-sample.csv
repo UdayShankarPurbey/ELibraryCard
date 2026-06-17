@@ -1,0 +1,4 @@
+title,author,isbn,genre,publishedYear,available
+Clean Code,Robert C. Martin,9780132350884,Programming,2008,true
+The Pragmatic Programmer,Andrew Hunt,9780201616224,Programming,1999,true
+Introduction to Algorithms,Thomas H. Cormen,9780262033848,Reference,2009,false
