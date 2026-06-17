@@ -32,6 +32,7 @@ export const DEFAULT_LOAN_DAYS = 14;
 export const FINE_PER_DAY = 5;
 
 export const DEFAULT_PERMISSION_TEMPLATE = [
+  { key: "settings.manage", label: "Manage settings", group: "general" },
   { key: "role.manage", label: "Manage roles", group: "access" },
   { key: "role.view", label: "View roles", group: "access" },
   { key: "user.manage", label: "Manage users", group: "users" },

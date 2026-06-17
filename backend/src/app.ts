@@ -17,6 +17,7 @@ import { userRouter } from "./routes/user.routes.js";
 import { bookRouter } from "./routes/book.routes.js";
 import { copyRouter } from "./routes/copy.routes.js";
 import { circulationRouter } from "./routes/circulation.routes.js";
+import { settingsRouter } from "./routes/settings.routes.js";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use("/api/v1/institutions/:institutionId/book-fields", bookFieldRouter);
 app.use("/api/v1/institutions", institutionRouter);
 app.use("/api/v1/permissions", permissionTenantRouter);
 app.use("/api/v1/book-fields", bookFieldTenantRouter);
+app.use("/api/v1/settings", settingsRouter);
 app.use("/api/v1/roles", roleRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/books/:bookId/copies", copyRouter);

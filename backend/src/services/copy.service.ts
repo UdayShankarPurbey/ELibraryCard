@@ -1,6 +1,9 @@
 import { Book } from "../models/book.model.js";
 import { BookCopy } from "../models/bookCopy.model.js";
+import { Institution } from "../models/institution.model.js";
 import { ApiError } from "../utils/ApiError.js";
+
+const BARCODE_SEQ_PAD = 5;
 
 const assertBook = async (institutionId: string, bookId: string) => {
   const exists = await Book.exists({ _id: bookId, institution: institutionId });
@@ -17,6 +20,34 @@ export const addCopies = async (institutionId: string, bookId: string, barcodes:
   const unique = [...new Set(barcodes)];
   const docs = unique.map((barcode) => ({ book: bookId, institution: institutionId, barcode }));
   return BookCopy.insertMany(docs, { ordered: true });
+};
+
+export const addCopiesByQuantity = async (
+  institutionId: string,
+  bookId: string,
+  quantity: number,
+) => {
+  await assertBook(institutionId, bookId);
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const inst = await Institution.findByIdAndUpdate(
+      institutionId,
+      { $inc: { "settings.barcodeSeq": quantity } },
+      { new: true },
+    ).select("settings");
+    if (!inst) throw new ApiError(404, "Institution not found");
+
+    const end = inst.settings.barcodeSeq;
+    const prefix = inst.settings.barcodePrefix ?? "";
+    const barcodes: string[] = [];
+    for (let n = end - quantity + 1; n <= end; n++) {
+      barcodes.push(`${prefix}${String(n).padStart(BARCODE_SEQ_PAD, "0")}`);
+    }
+
+    if (await BookCopy.exists({ barcode: { $in: barcodes } })) continue;
+    const docs = barcodes.map((barcode) => ({ book: bookId, institution: institutionId, barcode }));
+    return BookCopy.insertMany(docs, { ordered: true });
+  }
+  throw new ApiError(409, "Could not generate unique barcodes; set a distinct barcode prefix");
 };
 
 export const updateCopyStatus = async (

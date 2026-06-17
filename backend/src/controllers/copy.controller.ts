@@ -14,12 +14,11 @@ export const listCopies = asyncHandler(async (req, res) => {
 
 export const addCopies = asyncHandler(async (req, res) => {
   const body = req.body as CreateCopyInput;
-  const barcodes = body.barcodes ?? [body.barcode as string];
-  const copies = await copyService.addCopies(
-    resolveInstitutionId(req),
-    req.params.bookId as string,
-    barcodes,
-  );
+  const institutionId = resolveInstitutionId(req);
+  const bookId = req.params.bookId as string;
+  const copies = body.quantity
+    ? await copyService.addCopiesByQuantity(institutionId, bookId, body.quantity)
+    : await copyService.addCopies(institutionId, bookId, body.barcodes ?? [body.barcode as string]);
   res.status(201).json(new ApiResponse(201, copies, "Copies added"));
 });
 

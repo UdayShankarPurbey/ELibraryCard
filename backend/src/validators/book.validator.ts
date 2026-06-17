@@ -12,10 +12,12 @@ export const createCopySchema = z
   .object({
     barcode: z.string().min(1).optional(),
     barcodes: z.array(z.string().min(1)).optional(),
+    quantity: z.number().int().min(1).max(500).optional(),
   })
-  .refine((d) => Boolean(d.barcode) || (Array.isArray(d.barcodes) && d.barcodes.length > 0), {
-    message: "Provide a barcode or a non-empty barcodes array",
-  });
+  .refine(
+    (d) => Boolean(d.barcode) || (Array.isArray(d.barcodes) && d.barcodes.length > 0) || Boolean(d.quantity),
+    { message: "Provide a barcode, a barcodes array, or a quantity" },
+  );
 
 export const updateCopySchema = z.object({
   status: z.enum(["available", "lost", "damaged"]),
