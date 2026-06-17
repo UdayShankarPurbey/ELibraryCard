@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { superAdminGuard } from './core/guards/super-admin.guard';
+import { permissionGuard } from './core/guards/permission.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'app' },
@@ -36,6 +37,18 @@ export const routes: Routes = [
         canActivate: [superAdminGuard],
         loadChildren: () =>
           import('./features/institutions/institutions.routes').then((m) => m.INSTITUTION_ROUTES),
+      },
+      {
+        path: 'roles',
+        canActivate: [permissionGuard],
+        data: { permissions: ['role.manage'] },
+        loadComponent: () => import('./features/roles/role-list/role-list').then((m) => m.RoleList),
+      },
+      {
+        path: 'users',
+        canActivate: [permissionGuard],
+        data: { permissions: ['user.view', 'user.manage'], mode: 'any' },
+        loadComponent: () => import('./features/users/user-list/user-list').then((m) => m.UserList),
       },
     ],
   },
