@@ -3,6 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
 import { ThemeService } from '../../core/theme/theme.service';
+import { ContextService } from '../../core/context/context.service';
+import { LayoutService } from '../../core/layout/layout.service';
 import { Icon } from '../../shared/ui/icon/icon';
 import { NAV_ITEMS } from '../nav';
 
@@ -10,9 +12,29 @@ import { NAV_ITEMS } from '../nav';
   selector: 'app-topbar',
   imports: [Icon],
   template: `
-    <header class="flex h-14 items-center gap-3 border-b border-border bg-surface px-6">
+    <header class="flex h-14 items-center gap-3 border-b border-border bg-surface px-4">
+      <button
+        type="button"
+        class="rounded-md p-2 text-muted hover:bg-bg hover:text-fg"
+        aria-label="Toggle sidebar"
+        (click)="layout.toggleSidebar()"
+      >
+        <app-icon name="menu" />
+      </button>
+
       <h1 class="text-base font-semibold text-fg">{{ title() }}</h1>
+
       <div class="flex-1"></div>
+
+      @if (context.activeInstitution(); as inst) {
+        <span
+          class="flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700"
+        >
+          Managing: {{ inst.name }}
+          <button type="button" class="font-semibold hover:underline" (click)="exit()">Exit</button>
+        </span>
+      }
+
       <button
         type="button"
         class="rounded-md p-2 text-muted hover:bg-bg hover:text-fg"
@@ -26,6 +48,8 @@ import { NAV_ITEMS } from '../nav';
 })
 export class Topbar {
   protected readonly theme = inject(ThemeService);
+  protected readonly context = inject(ContextService);
+  protected readonly layout = inject(LayoutService);
   private readonly router = inject(Router);
 
   private readonly url = toSignal(
@@ -40,7 +64,13 @@ export class Topbar {
     const url = this.url();
     const match = NAV_ITEMS.find((item) => item.route !== '/app' && url.startsWith(item.route));
     if (match) return match.label;
+    if (url.startsWith('/app/profile')) return 'Profile';
     if (url.startsWith('/app/account')) return 'Account';
     return 'Dashboard';
   });
+
+  protected exit(): void {
+    this.context.clear();
+    this.router.navigateByUrl('/app/institutions');
+  }
 }

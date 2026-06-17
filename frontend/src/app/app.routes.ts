@@ -28,6 +28,10 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
+        path: 'profile',
+        loadComponent: () => import('./features/account/profile/profile').then((m) => m.Profile),
+      },
+      {
         path: 'account/change-password',
         loadComponent: () =>
           import('./features/auth/change-password/change-password').then((m) => m.ChangePassword),

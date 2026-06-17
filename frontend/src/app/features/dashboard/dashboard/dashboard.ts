@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ContextService } from '../../../core/context/context.service';
 import { Icon } from '../../../shared/ui/icon/icon';
 import { NavItem, visibleNav } from '../../../layout/nav';
 
@@ -35,7 +36,10 @@ import { NavItem, visibleNav } from '../../../layout/nav';
 })
 export class Dashboard {
   protected readonly auth = inject(AuthService);
+  private readonly context = inject(ContextService);
   protected readonly cards = computed<NavItem[]>(() =>
-    visibleNav(this.auth).filter((item) => item.route !== '/app'),
+    visibleNav(this.auth, this.context.activeInstitution() !== null).filter(
+      (item) => item.route !== '/app',
+    ),
   );
 }

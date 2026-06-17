@@ -23,12 +23,13 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'My books', route: '/app/my-issues', icon: 'bookmark' },
 ];
 
-export function visibleNav(auth: AuthService): NavItem[] {
+// A super admin sees tenant sections only while "managing" an institution (hasContext).
+export function visibleNav(auth: AuthService, hasContext: boolean): NavItem[] {
   const superAdmin = auth.isSuperAdmin();
   return NAV_ITEMS.filter((item) => {
     if (item.superAdmin) return superAdmin;
     if (item.route === '/app') return true;
-    if (superAdmin) return false;
+    if (superAdmin) return hasContext && !!item.anyOf;
     return item.anyOf ? auth.hasAny(...item.anyOf) : true;
   });
 }

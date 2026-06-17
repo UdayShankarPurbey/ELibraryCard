@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { InstitutionApi } from '../../../core/api/institution-api';
 import { Institution } from '../../../core/models/institution.model';
+import { ContextService } from '../../../core/context/context.service';
 import { ToastService } from '../../../core/notifications/toast.service';
 
 @Component({
@@ -92,6 +93,13 @@ import { ToastService } from '../../../core/notifications/toast.service';
                 <td class="px-4 py-3 text-muted">{{ inst.createdAt | date: 'mediumDate' }}</td>
                 <td class="px-4 py-3">
                   <div class="flex justify-end gap-3 text-xs font-medium">
+                    <button
+                      type="button"
+                      class="font-semibold text-primary hover:underline"
+                      (click)="manage(inst)"
+                    >
+                      Manage
+                    </button>
                     <a
                       [routerLink]="[inst._id, 'permissions']"
                       class="text-primary hover:underline"
@@ -147,6 +155,8 @@ export class InstitutionList {
   private readonly api = inject(InstitutionApi);
   private readonly fb = inject(FormBuilder);
   private readonly toast = inject(ToastService);
+  private readonly context = inject(ContextService);
+  private readonly router = inject(Router);
 
   protected readonly items = signal<Institution[]>([]);
   protected readonly showForm = signal(false);
@@ -205,6 +215,12 @@ export class InstitutionList {
       },
       error: () => this.saving.set(false),
     });
+  }
+
+  protected manage(inst: Institution): void {
+    this.context.setInstitution({ id: inst._id, name: inst.name });
+    this.toast.success(`Managing ${inst.name}`);
+    this.router.navigateByUrl('/app');
   }
 
   protected remove(inst: Institution): void {

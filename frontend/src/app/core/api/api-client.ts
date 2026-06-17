@@ -4,11 +4,13 @@ import { Observable, map } from 'rxjs';
 import { API_BASE_URL } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { QueryParams } from '../models/common.model';
+import { ContextService } from '../context/context.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApiClient {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(API_BASE_URL);
+  private readonly context = inject(ContextService);
 
   get<T>(path: string, params?: QueryParams): Observable<T> {
     return this.unwrap(
@@ -51,8 +53,14 @@ export class ApiClient {
     return source.pipe(map((res) => res.data));
   }
 
+  // When a super admin is managing an institution, its id flows on every request
+  // as ?institutionId= (the backend reads it for tenant-scoped routes, ignores it elsewhere).
   private url(path: string): string {
-    return `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+    const base = `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+    const active = this.context.activeInstitution();
+    if (!active) return base;
+    const separator = base.includes('?') ? '&' : '?';
+    return `${base}${separator}institutionId=${encodeURIComponent(active.id)}`;
   }
 
   private toParams(params?: QueryParams): HttpParams {
