@@ -15,23 +15,28 @@ import { Icon } from '../../../shared/ui/icon/icon';
         <button
           type="button"
           class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-[var(--color-primary-hover)]"
-          (click)="showForm.set(!showForm())"
+          (click)="openCreate()"
         >
           Add field
         </button>
       </div>
       <p class="mb-6 text-sm text-muted">
-        These columns define what a book record looks like for your institution. They drive the
-        add-book form, the catalog table, and bulk upload.
+        These columns define a book record for your institution. They drive the add-book form, the
+        catalog table, and bulk upload. Defaults are provided — edit or delete them as you need.
       </p>
 
       @if (showForm()) {
         <form
           class="mb-6 grid gap-3 rounded-lg border border-border bg-surface p-5 shadow-card sm:grid-cols-2"
           [formGroup]="form"
-          (ngSubmit)="add()"
+          (ngSubmit)="save()"
         >
-          <input formControlName="fieldKey" placeholder="fieldKey (e.g. writer)" class="ctl" />
+          <input
+            formControlName="fieldKey"
+            placeholder="fieldKey (e.g. author)"
+            class="ctl"
+            [readonly]="editingId() !== null"
+          />
           <input formControlName="label" placeholder="Label" class="ctl" />
           <select formControlName="dataType" class="ctl">
             @for (t of types; track t) {
@@ -54,7 +59,7 @@ import { Icon } from '../../../shared/ui/icon/icon';
               class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg disabled:opacity-60"
               [disabled]="form.invalid"
             >
-              Add field
+              {{ editingId() ? 'Save field' : 'Add field' }}
             </button>
             <button
               type="button"
@@ -111,15 +116,26 @@ import { Icon } from '../../../shared/ui/icon/icon';
                 <td class="px-4 py-3 text-muted">{{ field.isRequired ? 'Yes' : 'No' }}</td>
                 <td class="px-4 py-3 text-muted">{{ field.options.join(', ') || '—' }}</td>
                 <td class="px-4 py-3 text-right">
-                  <button
-                    type="button"
-                    class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
-                    aria-label="Delete field"
-                    title="Delete"
-                    (click)="remove(field)"
-                  >
-                    <app-icon name="trash" [size]="16" />
-                  </button>
+                  <div class="flex justify-end gap-1">
+                    <button
+                      type="button"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-fg"
+                      aria-label="Edit field"
+                      title="Edit"
+                      (click)="openEdit(field)"
+                    >
+                      <app-icon name="edit" [size]="16" />
+                    </button>
+                    <button
+                      type="button"
+                      class="rounded-md p-1.5 text-muted hover:bg-bg hover:text-[var(--color-danger-600)]"
+                      aria-label="Delete field"
+                      title="Delete"
+                      (click)="remove(field)"
+                    >
+                      <app-icon name="trash" [size]="16" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             } @empty {
@@ -155,6 +171,7 @@ export class FieldSettings {
   protected readonly types = ['string', 'number', 'boolean', 'date', 'enum'] as const;
   protected readonly fields = signal<FieldDefinition[]>([]);
   protected readonly showForm = signal(false);
+  protected readonly editingId = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
     fieldKey: ['', [Validators.required]],
@@ -168,7 +185,25 @@ export class FieldSettings {
     this.load();
   }
 
-  protected add(): void {
+  protected openCreate(): void {
+    this.editingId.set(null);
+    this.form.reset({ fieldKey: '', label: '', dataType: 'string', isRequired: false, options: '' });
+    this.showForm.set(true);
+  }
+
+  protected openEdit(field: FieldDefinition): void {
+    this.editingId.set(field._id);
+    this.form.reset({
+      fieldKey: field.fieldKey,
+      label: field.label,
+      dataType: field.dataType,
+      isRequired: field.isRequired,
+      options: field.options.join(', '),
+    });
+    this.showForm.set(true);
+  }
+
+  protected save(): void {
     if (this.form.invalid) return;
     const { fieldKey, label, dataType, isRequired, options } = this.form.getRawValue();
     const parsedOptions =
@@ -179,21 +214,23 @@ export class FieldSettings {
             .filter(Boolean)
         : [];
 
-    this.api
-      .createMine({
-        fieldKey,
-        label,
-        dataType,
-        isRequired,
-        options: parsedOptions,
-        sortOrder: this.fields().length,
-      })
-      .subscribe(() => {
-        this.toast.success('Field added');
-        this.form.reset({ fieldKey: '', label: '', dataType: 'string', isRequired: false, options: '' });
-        this.showForm.set(false);
-        this.load();
-      });
+    const id = this.editingId();
+    const request = id
+      ? this.api.updateMine(id, { label, dataType, isRequired, options: parsedOptions })
+      : this.api.createMine({
+          fieldKey,
+          label,
+          dataType,
+          isRequired,
+          options: parsedOptions,
+          sortOrder: this.fields().length,
+        });
+
+    request.subscribe(() => {
+      this.toast.success(id ? 'Field updated' : 'Field added');
+      this.showForm.set(false);
+      this.load();
+    });
   }
 
   protected move(index: number, direction: -1 | 1): void {
