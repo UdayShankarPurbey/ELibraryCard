@@ -1,6 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ThemeService } from '../../core/theme/theme.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -12,8 +11,11 @@ import { ThemeService } from '../../core/theme/theme.service';
       </div>
       <div class="flex items-center justify-center bg-bg px-4 py-10">
         <div class="w-full max-w-md">
-          <div class="mb-6 flex justify-center">
-            <img [src]="logoSrc()" alt="ELibraryCard" width="244" height="40" class="h-9 w-auto" />
+          <div class="mb-6 flex items-center justify-center gap-2">
+            <img src="/logo-mark.svg" alt="" width="40" height="40" class="h-10 w-10" />
+            <span class="text-2xl font-extrabold tracking-tight text-fg">
+              eLibrary<span class="text-primary">Card</span>
+            </span>
           </div>
           <div class="rounded-lg border border-border bg-surface p-6 shadow-card">
             <router-outlet />
@@ -23,7 +25,4 @@ import { ThemeService } from '../../core/theme/theme.service';
     </div>
   `,
 })
-export class AuthLayout {
-  private readonly theme = inject(ThemeService);
-  protected readonly logoSrc = computed(() => (this.theme.dark() ? '/logo-dark.svg' : '/logo.svg'));
-}
+export class AuthLayout {}
